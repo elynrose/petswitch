@@ -52,7 +52,7 @@ if(Auth::user()->timezone){
                 @if($serviceRequests->count())
                 
                     @foreach($serviceRequests as $key => $serviceRequest)
-                        <div class="card-body shadow mb-5">
+                        <div class="card-body shadow-sm mb-5">
                             <div class="row">
                                 <div class="col-md-3">
                                     @php
@@ -125,6 +125,10 @@ if(Auth::user()->timezone){
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p><strong>{{ __('Pickup') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
+                                           
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>{{ __('Drop-off') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->to)->format('l, F j, Y, g:i A') ?? '' }}</p>  
                                             <p>
                                                 @if($serviceRequest->pending==1 && Auth::id()==$serviceRequest->user_id && $serviceRequest->to < $today) 
                                                     <form action="{{ route('frontend.bookings.completed', $serviceRequest->id) }}" method="POST" onsubmit="return confirm(' {{$userPhoto->name ?? 'User'}}  {{ __('global.points_awarded_start') }}{{ __('global.points_awarded_end') }} ');" style="display: inline-block;">
@@ -145,10 +149,7 @@ if(Auth::user()->timezone){
                                                 <p class="small red">{{ trans('cruds.serviceRequest.expired_request')}} </p> 
                                                 @endif
 
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p><strong>{{ __('Drop-off') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->to)->format('l, F j, Y, g:i A') ?? '' }}</p>                                                
+                                            </p>                                              
                                         </div>
                                     </div>
                                 </div>

@@ -53,6 +53,15 @@
                             @endif
                         </div>
                         <div class="form-group">
+                            <label class="required" for="title">{{ trans('cruds.user.fields.zip') }}</label>
+                            <input class="form-control {{ $errors->has('zip') ? 'is-invalid' : '' }}" type="text" name="zip" id="zip" value="{{ old('zip', auth()->user()->zip) }}" required>
+                            @if($errors->has('zip'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('zip') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="form-group">
                             <label class="required" for="timezone">{{ trans('global.timezone') }}</label>
                         <select name="timezone" name="timezone" class="form-control{{ $errors->has('timezone') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.timezone') }}">
    <option value="{{ old('email', auth()->user()->timezone) }}">{{ old('email', auth()->user()->timezone) }}</option>

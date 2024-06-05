@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-12">
         @can('pet_create')
-        <a class="btn btn-success btn-sm" href="{{ route('frontend.pets.create') }}">
+        <a class="btn btn-success btn-sm mb-5" href="{{ route('frontend.pets.create') }}">
           {{ trans('global.add') }} {{ trans('cruds.pet.title_singular') }}
         </a>
         @endcan
@@ -16,7 +16,7 @@
     <div class="row">
       @foreach($pets as $key => $pet)
       <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow">
+        <div class="card shadow-sm">
           <div class="card-img">
             @if($pet->photos)
             <img src="{{ $pet->photos->getUrl('preview') }}">

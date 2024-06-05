@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group">
                             <label class="required" for="animal_id">{{ trans('cruds.pet.fields.animal') }}</label>
-                            <select class="form-control select2" name="animal_id" id="animal_id" required>
+                            <select class="form-control select" name="animal_id" id="animal_id" required>
                                 @foreach($animals as $id => $entry)
                                     <option value="{{ $id }}" {{ (old('animal_id') ? old('animal_id') : $pet->animal->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                                 @endforeach
@@ -82,21 +82,7 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.pet.fields.age_helper') }}</span>
                         </div>
-                        <div class="form-group">
-                            <label class="required">{{ trans('cruds.pet.fields.gender') }}</label>
-                            <select class="form-control" name="gender" id="gender" required>
-                                <option value disabled {{ old('gender', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                                @foreach(App\Models\Pet::GENDER_SELECT as $key => $label)
-                                    <option value="{{ $key }}" {{ old('gender', $pet->gender) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('gender'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('gender') }}
-                                </div>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.pet.fields.gender_helper') }}</span>
-                        </div>
+                       
                         <div class="form-group">
                             <label class="required">{{ trans('cruds.pet.fields.gets_along_with') }}</label>
                             @foreach(App\Models\Pet::GETS_ALONG_WITH_RADIO as $key => $label)

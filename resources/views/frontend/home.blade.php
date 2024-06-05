@@ -26,7 +26,7 @@ date_default_timezone_set(Auth::user()->timezone);
                     </div>
                 </div>
                 @endcan
-                <form action="{{ route('frontend.service-requests.index') }}" method="GET" class="">
+                <form action="{{ route('frontend.home') }}" method="GET" class="">
                     <div class="row">
                         <div class="col-md-4 col-sm-12 mb-3">
                             <input type="text" name="zip" class="form-control" placeholder="Enter Zip Code" required>
