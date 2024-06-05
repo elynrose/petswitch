@@ -96,9 +96,9 @@ if(Auth::user()->timezone){
                                         @endif
                                     </div>
                                     <h4>{{ ucfirst($serviceRequest->service->name) ?? '' }} {{_('for')}} {{ $serviceRequest->pet->name ?? '' }}</h4>
-                                    <p class="small text-muted"> {{ __('Posted') }} {{ $serviceRequest->created_at->diffForHumans() }} @if($booking->user->name)
-and booked by <a href="{{ route('frontend.users.show', $booking->user->id) }}" target="_blank">{{ $booking->user->name ?? '' }}</a>
-@endif</p>
+                                    <p class="small text-muted"> {{ __('Posted') }} {{ $serviceRequest->created_at->diffForHumans() }} 
+@if($booking) and booked by <a href="{{ route('frontend.users.show', $booking->user->id) }}" target="_blank">{{ $booking->user->name ?? '' }} @endif</a>
+</p>
                                    <!--display pet rating, color the stars based on the rating-->
                                     @if($booking)
                                     

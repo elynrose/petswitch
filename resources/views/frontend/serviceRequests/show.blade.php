@@ -109,6 +109,7 @@ date_default_timezone_set(Auth::user()->timezone);
 						<p class="mbr-fonts-style display-7">
 							{{ \Carbon\Carbon::parse($serviceRequest->to)->format('l, F j, Y, g:i A') ?? '' }}
 						</p>
+						
 					</div>
 				</div>
 			</div>
@@ -116,6 +117,7 @@ date_default_timezone_set(Auth::user()->timezone);
 				<div>
 					<div>
 						@if($serviceRequest->closed==0 && Auth::id()!==$serviceRequest->user_id)
+						
 							<form id="bookingForm" action="{{ route('frontend.bookings.store') }}" method="POST" enctype="multipart/form-data">
 								@method('POST')
 								@csrf

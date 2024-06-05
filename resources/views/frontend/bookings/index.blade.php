@@ -12,7 +12,7 @@ date_default_timezone_set(Auth::user()->timezone);
   <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <h1 class="py-5">{{ trans('cruds.booking.title')}}</h1>
+        <h1 class="mb-5">{{ trans('cruds.booking.title')}}</h1>
         @if($bookings->count() > 0)
           @foreach($bookings as $key => $booking)
             @php

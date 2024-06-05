@@ -45,9 +45,17 @@ class BookingsController extends Controller
 
     public function store(StoreBookingRequest $request)
     {
+        //if this pet has an active booking status, do not allow the user to book another service request
+        $active_booking = Booking::where('service_request_id', $request->service_request_id)
+        ->where('decline', '0')
+        ->where('user_id', Auth::id())
+        ->first();
+
+        if(!$active_booking){
+
         $booking = Booking::create($request->all());
 
-
+  }
         if($booking){
 
             //Get the hours between the from and to date
