@@ -24,6 +24,7 @@ class BookingsController extends Controller
 
         $bookings = Booking::with(['service_request', 'pet', 'user'])
             ->where('decline', '0')
+            ->where('service_request_id', '!=', null)
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
