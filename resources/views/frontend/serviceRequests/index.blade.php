@@ -96,7 +96,9 @@ if(Auth::user()->timezone){
                                         @endif
                                     </div>
                                     <h4>{{ ucfirst($serviceRequest->service->name) ?? '' }} {{_('for')}} {{ $serviceRequest->pet->name ?? '' }}</h4>
-                                    <p class="small text-muted"> {{ __('Posted') }} {{ $serviceRequest->created_at->diffForHumans() }}</p>
+                                    <p class="small text-muted"> {{ __('Posted') }} {{ $serviceRequest->created_at->diffForHumans() }} @if($booking->user->name)
+and booked by <a href="{{ route('frontend.users.show', $booking->user->id) }}" target="_blank">{{ $booking->user->name ?? '' }}</a>
+@endif</p>
                                    <!--display pet rating, color the stars based on the rating-->
                                     @if($booking)
                                     
@@ -118,6 +120,8 @@ if(Auth::user()->timezone){
 @elseif($serviceRequest->pending==2 && $serviceRequest->decline == 0  && $serviceRequest->to < $today && $serviceRequest->closed == 1)
 <p class="badge badge-warning">{{ __('Completed') }}</p>
 @endif
+
+
 
 
                                     @endif
