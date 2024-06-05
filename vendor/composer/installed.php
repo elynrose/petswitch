@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b627c2998c43c0f6ed26393e8d6f508ed54c6e1a',
+        'reference' => '5b57af227e46504b9acec457493815621a3475a2',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -102,6 +102,15 @@
             'install_path' => __DIR__ . '/../filp/whoops',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'froiden/laravel-installer' => array(
+            'pretty_version' => '1.9.0',
+            'version' => '1.9.0.0',
+            'reference' => 'ed1968f79cc35631d44e42d064353e5a32111c9c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../froiden/laravel-installer',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'fruitcake/php-cors' => array(
             'pretty_version' => 'v1.3.0',
@@ -391,7 +400,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b627c2998c43c0f6ed26393e8d6f508ed54c6e1a',
+            'reference' => '5b57af227e46504b9acec457493815621a3475a2',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

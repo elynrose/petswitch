@@ -27,6 +27,7 @@ class ComposerStaticInit456161483f32ede05953d68066dc54d9
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        'a98e6aefe38031f7d6763703855cc099' => __DIR__ . '/..' . '/froiden/laravel-installer/src/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
@@ -165,6 +166,7 @@ class ComposerStaticInit456161483f32ede05953d68066dc54d9
         'F' => 
         array (
             'Fruitcake\\Cors\\' => 15,
+            'Froiden\\LaravelInstaller\\' => 25,
             'Faker\\' => 6,
         ),
         'E' => 
@@ -528,6 +530,10 @@ class ComposerStaticInit456161483f32ede05953d68066dc54d9
         'Fruitcake\\Cors\\' => 
         array (
             0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
+        ),
+        'Froiden\\LaravelInstaller\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/froiden/laravel-installer/src',
         ),
         'Faker\\' => 
         array (
@@ -1566,6 +1572,24 @@ class ComposerStaticInit456161483f32ede05953d68066dc54d9
         'Faker\\Provider\\zh_TW\\Text' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Provider/zh_TW/Text.php',
         'Faker\\UniqueGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/UniqueGenerator.php',
         'Faker\\ValidGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/ValidGenerator.php',
+        'Froiden\\LaravelInstaller\\Controllers\\DatabaseController' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Controllers/DatabaseController.php',
+        'Froiden\\LaravelInstaller\\Controllers\\EnvironmentController' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Controllers/EnvironmentController.php',
+        'Froiden\\LaravelInstaller\\Controllers\\FinalController' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Controllers/FinalController.php',
+        'Froiden\\LaravelInstaller\\Controllers\\PermissionsController' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Controllers/PermissionsController.php',
+        'Froiden\\LaravelInstaller\\Controllers\\RequirementsController' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Controllers/RequirementsController.php',
+        'Froiden\\LaravelInstaller\\Controllers\\WelcomeController' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Controllers/WelcomeController.php',
+        'Froiden\\LaravelInstaller\\Helpers\\DatabaseManager' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/DatabaseManager.php',
+        'Froiden\\LaravelInstaller\\Helpers\\EnvironmentManager' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/EnvironmentManager.php',
+        'Froiden\\LaravelInstaller\\Helpers\\InstalledFileManager' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/InstalledFileManager.php',
+        'Froiden\\LaravelInstaller\\Helpers\\MigrationsHelper' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/MigrationsHelper.php',
+        'Froiden\\LaravelInstaller\\Helpers\\PermissionsChecker' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/PermissionsChecker.php',
+        'Froiden\\LaravelInstaller\\Helpers\\Reply' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/Reply.php',
+        'Froiden\\LaravelInstaller\\Helpers\\RequirementsChecker' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Helpers/RequirementsChecker.php',
+        'Froiden\\LaravelInstaller\\Middleware\\canInstall' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Middleware/canInstall.php',
+        'Froiden\\LaravelInstaller\\Middleware\\canUpdate' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Middleware/canUpdate.php',
+        'Froiden\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Providers/LaravelInstallerServiceProvider.php',
+        'Froiden\\LaravelInstaller\\Request\\CoreRequest' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Request/CoreRequest.php',
+        'Froiden\\LaravelInstaller\\Request\\UpdateRequest' => __DIR__ . '/..' . '/froiden/laravel-installer/src/Request/UpdateRequest.php',
         'Fruitcake\\Cors\\CorsService' => __DIR__ . '/..' . '/fruitcake/php-cors/src/CorsService.php',
         'Fruitcake\\Cors\\Exceptions\\InvalidOptionException' => __DIR__ . '/..' . '/fruitcake/php-cors/src/Exceptions/InvalidOptionException.php',
         'GrahamCampbell\\ResultType\\Error' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Error.php',
