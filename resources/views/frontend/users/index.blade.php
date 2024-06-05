@@ -41,7 +41,7 @@
 				<div class="card-box">
 					<h4 class="card-title mbr-fonts-style display-5">{{ $user->name ?? 'User' }}</h4>
 					<p class="mbr-text mbr-fonts-style display-4"><strong>{{ $user->city ?? '' }}@if($user->state) {{_(',')}} @endif{{ $user->state ?? '' }}   </strong></p>
-          <p class="display-9 small">Total Credits: {{ App\models\Credit::where('user_id', $user->id)->sum('points') ?? 'New' }} <br> 
+          <p class="display-9 small">Total Credits: {{ App\Models\Credit::where('user_id', $user->id)->sum('points') ?? 'New' }} <br> 
           Member Since: {{ $user->created_at->diffForHumans() }}
           
         </p>
