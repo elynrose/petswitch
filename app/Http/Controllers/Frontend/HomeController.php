@@ -9,12 +9,18 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Gate;
 
+
 class HomeController
 {
    
     public function index(Request $req)
     {
         abort_if(Gate::denies('service_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        //if users timezone or zipcode is not set, redirect them to the profile page with message
+        if(!auth()->user()->timezone && !auth()->user()->zip_code) {
+            return redirect()->route('frontend.profile.index')->with('message', 'Please set your timezone and zip code to view service requests');
+        }
 
         if($req->has('zip') && $req->has('radius')) {
             $serviceRequests = $this->findNearbyRequests($req->zip, $req->radius);
@@ -74,5 +80,24 @@ class HomeController
 
     return $filteredRequests;
 }
+
+public function calculateDistance($lat1, $lon1, $lat2, $lon2)
+{
+    $earthRadius = 3959; // Radius of the earth in miles
+
+    $dLat = deg2rad($lat2 - $lat1);
+    $dLon = deg2rad($lon2 - $lon1);
+
+    $a = sin($dLat / 2) * sin($dLat / 2) +
+        cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+        sin($dLon / 2) * sin($dLon / 2);
+
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    $distance = $earthRadius * $c; // Distance in miles
+
+    return $distance;
+}
+
 
 }
