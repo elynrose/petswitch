@@ -10,7 +10,7 @@
                 @if( auth()->user()->profile_photo )
                                                 <img src="{{  auth()->user()->profile_photo->getUrl('preview') }}" width="80">
                                         @else 
-                                        <img src="{{ asset('/assets/images/User.png') }}">
+                                        <img src="{{ asset('/assets/images/User.png') }}" width="80">
                                       @endif</a>
                     <form method="POST" action="{{ route("frontend.profile.update") }}">
                         @csrf
