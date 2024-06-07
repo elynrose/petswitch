@@ -49,7 +49,7 @@ date_default_timezone_set(Auth::user()->timezone);
                                     @else
                                     <img src="{{ asset('/assets/images/User.png') }}" class="user-image shadow" data-id="{{ $serviceRequest->user->id }}" class="user-image shadow" data-id="{{ $serviceRequest->user->id }}" id="pet-img-{{ $serviceRequest->user->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%;">
                                     @endif
-                                    <img src="{{ $serviceRequest->pet->photos->getUrl('preview') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
+                                    <img src="{{ $serviceRequest->pet->photos->getUrl('preview') }}" class="pet-image" width="100%" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
                                 </div>
                             </div>
                             <div class="col-md-9">
