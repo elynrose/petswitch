@@ -135,6 +135,11 @@ class ServiceRequestsController extends Controller
             return redirect()->back();
         }
 
+        if ($hours < 1) {
+            session()->flash('error', 'Duration should be a minimum of 1 hour');
+            return redirect()->back();
+        }
+
         $serviceRequest = ServiceRequest::create([
             'service_id' => $request->service_id,
             'pet_id' => $request->pet_id,
@@ -217,6 +222,12 @@ class ServiceRequestsController extends Controller
             session()->flash('error', 'From date cannot be in the past');
             return redirect()->back();
         }
+
+        if ($hours < 1) {
+            session()->flash('error', 'Duration should be a minimum of 1 hour');
+            return redirect()->back();
+        }
+
 
         $userCredit = Credit::where('user_id', Auth::user()->id)->first();
 
