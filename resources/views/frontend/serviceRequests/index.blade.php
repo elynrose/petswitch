@@ -25,7 +25,7 @@ if(Auth::user()->timezone){
                     @foreach($serviceRequests as $key => $serviceRequest)
                         <div class="card-body shadow-sm mb-5">
                             <div class="row">
-                                <div class="col-md-3 col-sm-12">
+                                <div class="col-md-3 col-sm-12 col-lg-3">
                                     @php
                                     // Get the booking for the service request
                                     $booking = App\Models\Booking::where('service_request_id', $serviceRequest->id)->first();
@@ -52,7 +52,7 @@ if(Auth::user()->timezone){
                                         @endphp
                                     </div>
                                 </div>
-                                <div class="col-md-9 col-sm-12">
+                                <div class="col-md-9 col-sm-12 col-lg-9">
                                     <div class="pull-right">
                                         @if(Auth::id()==$serviceRequest->user_id)  
                                             @can('service_request_delete')
