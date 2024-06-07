@@ -1,37 +1,34 @@
 <?php
 namespace App\Http\Controllers\Frontend;
+
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyServiceRequestRequest;
 use App\Http\Requests\StoreServiceRequestRequest;
 use App\Http\Requests\UpdateServiceRequestRequest;
+use App\Models\Credit;
 use App\Models\Pet;
 use App\Models\Service;
 use App\Models\ServiceRequest;
 use App\Models\User;
+use App\Models\UserAlert;
+use Auth;
+use Carbon\Carbon;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-use Auth;
-use Illuminate\Support\Facades\Http;
-use Carbon\Carbon;
-use App\Models\Credit;
-use App\Jobs\SendServiceRequestEmailJob;
-use App\Mail\ServiceRequestEmail;
-use App\Models\UserAlert;
-
-
 
 
 class ServiceRequestsController extends Controller
 {
-    
 
     public function index(Request $request)
     {
         abort_if(Gate::denies('service_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
+
         $today = Carbon::now()->timezone(Auth::user()->timezone);
 
         $zip = $request->input('zip');
@@ -41,7 +38,6 @@ class ServiceRequestsController extends Controller
             $serviceRequests = $this->findNearbyRequests($zip, $radius);
         } else {
             $serviceRequests = ServiceRequest::with(['service', 'pet', 'user', 'booking'])
-               // ->where('closed', 0)
                 ->orderBy('created_at', 'desc')
                 ->where('user_id', Auth::id())
                 ->take(10)
@@ -128,55 +124,69 @@ class ServiceRequestsController extends Controller
 
     public function store(StoreServiceRequestRequest $request)
     {
-        $credits = Carbon::parse($request->from)->diffInHours(Carbon::parse($request->to));
+        $hours = $request->hours;
+        $to_date = Carbon::parse($request->from)->timezone(Auth::user()->timezone)->addHours($hours);
+        $request->merge(['to' => $to_date->format('Y-m-d H:i:s')]);
 
-        $userCredit = Credit::where('user_id', auth()->id())->first();
+        $credits = $request->hours ?? 0;
+
+        if ($request->from < Carbon::now()->timezone(Auth::user()->timezone)) {
+            session()->flash('error', 'From date cannot be in the past');
+            return redirect()->back();
+        }
+
+        $serviceRequest = ServiceRequest::create([
+            'service_id' => $request->service_id,
+            'pet_id' => $request->pet_id,
+            'zip_code' => $request->zip_code,
+            'from' => $request->from,
+            'to' => $request->to,
+            'comments' => $request->comments,
+            'user_id' => $request->user_id,
+        
+        ]);
+
+        if ($media = $request->input('ck-media', false)) {
+            Media::whereIn('id', $media)->update(['model_id' => $serviceRequest->id]);
+        }
+
+        $userCredit = Credit::where('user_id', Auth::user()->id)->first();
 
         if (!$userCredit) {
             $userCredit = Credit::create([
                 'user_id' => auth()->id(),
                 'points' => 24,
             ]);
-        }
-
-        if ($userCredit->points == 0 || $userCredit->points < $credits) {
-            return back()->with('error', 'You do not have enough credit to make a request. Start by caring for someone\'s pet. To earn credits, you can care for someone\'s pet or invite a friend to join the platform.');
-        }
-
-        if ($request->from > $request->to) {
-            return back()->with('error', 'From date must be less than To date');
-        }
-
-        $serviceRequest = ServiceRequest::create($request->all());
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $serviceRequest->id]);
-        }
+        } elseif ($userCredit->points < $credits || $userCredit->points < 1) {
+                session()->flash('error', 'You need ' . $credits . ' credit hours to create this request. You currently have ' . $userCredit->points . ' hours available.');
+                return redirect()->back();
+            } else {
 
         $userCredit->service_request_id = $serviceRequest->id;
-        $userCredit->points -= $credits;
+        $userCredit->points -= $hours;
         
-        if($userCredit->save()){
-            //Send an email to all users within 10 miles of the zip code
+        if ($userCredit->save()) {
+            // Send an email to all users within 10 miles of the zip code
             $zip = $request->zip_code;
             $radius = 10;
             $users = $this->findNearbyMembers($zip, $radius);
-          
-            
-            //Create the user alert
-              $userAlerts = new UserAlert();
-              $userAlerts->alert_text = 'A new service request has been posted near you. Check it out now!';
-              $userAlerts->alert_link = route('frontend.service-requests.index');
-              $userAlerts->save();
-           
-              foreach ($users as $user) {
-              //Create a user alert for each user, insert into the user_user_alerts table
-                $userAlerts->users()->attach($user->id);
 
+            // Create the user alert
+            $userAlert = new UserAlert();
+            $userAlert->alert_text = 'A new service request has been posted near you. Check it out now!';
+            $userAlert->alert_link = route('frontend.service-requests.index');
+            $userAlert->save();
+
+            foreach ($users as $user) {
+                // Create a user alert for each user, insert into the user_user_alerts table
+                $userAlert->users()->attach($user->id);
             }
         }
-        
+    
+
         return redirect()->route('frontend.service-requests.index');
+        }
+
     }
 
     public function edit(ServiceRequest $serviceRequest)
@@ -196,9 +206,44 @@ class ServiceRequestsController extends Controller
 
     public function update(UpdateServiceRequestRequest $request, ServiceRequest $serviceRequest)
     {
-        $serviceRequest->update($request->all());
+        $hours = $request->hours;
+        //cast hours as integer
+        $hours = (int)$hours;
+
+        $to_date = Carbon::parse($request->from)->timezone(Auth::user()->timezone)->addHours($hours);
+        $request->merge(['to' => $to_date->format('Y-m-d H:i:s')]);
+
+        if ($request->from < Carbon::now()->timezone(Auth::user()->timezone)) {
+            session()->flash('error', 'From date cannot be in the past');
+            return redirect()->back();
+        }
+
+        $userCredit = Credit::where('user_id', Auth::user()->id)->first();
+
+        if (!$userCredit) {
+            $userCredit = Credit::create([
+                'user_id' => auth()->id(),
+                'points' => 24,
+            ]);
+        }
+        elseif($userCredit->points < $hours || $userCredit->points < 1) {
+            session()->flash('error', 'You need '.$hours.' credit hours to create this request. You currently have '.$userCredit->points.' hours available.');
+            return redirect()->back();
+        } else {
+
+        $serviceRequest->update([
+            'service_id' => $request->service_id,
+            'pet_id' => $request->pet_id,
+            'zip_code' => $request->zip_code,
+            'from' => $request->from,
+            'to' => $request->to,
+            'comments' => $request->comments,
+            'user_id' => $request->user_id,
+        ]);
 
         return redirect()->route('frontend.service-requests.index');
+        
+        }
     }
 
     public function show(ServiceRequest $serviceRequest)
@@ -242,12 +287,11 @@ class ServiceRequestsController extends Controller
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 
-
     public function findNearbyMembers($zip, $max_radius)
     {
         $members = User::with(['roles', 'media'])
-        ->where('id', '!=', Auth::id())
-        ->get();
+            ->where('id', '!=', Auth::id())
+            ->get();
         $nearbyMembers = [];
         $zip = $this->getZipCode($zip);
         $zipLat = $zip['lat'];
@@ -258,12 +302,11 @@ class ServiceRequestsController extends Controller
             $userLon = $userZip['lon'];
             $distance = $this->calculateDistance($zipLat, $zipLon, $userLat, $userLon);
             if ($distance <= $max_radius) {
-                $users[] = $user;
+                $nearbyMembers[] = $user;
             }
         }
-        return $users;
+        return $nearbyMembers;
     }
-    
 
     public function getZipCode($zip)
     {
@@ -273,5 +316,4 @@ class ServiceRequestsController extends Controller
         $lon = $response->places[0]->longitude;
         return ['lat' => $lat, 'lon' => $lon];
     }
-
 }

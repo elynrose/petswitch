@@ -192,19 +192,19 @@ label {
     border-radius: 0 6px 6px 0;
     padding:0 3px;
 }
-.new{
+.new-tag{
     background-color: #01d54b;
     border: 1px solid #01d54b;
 }
-.completed{
+.completed-tag{
     background-color: #6b01d5;
     border: 1px solid #6b01d5;
 }
-.booked{
+.booked-tag{
     background-color: #2e03ee;
     border: 1px solid #2e03ee;
 }
-.expired {
+.expired-tag {
     background-color: #d50303;
     border: 1px solid #d50303;
 }
@@ -231,6 +231,10 @@ position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border
     border-bottom:solid 1px #f0f3f5;
 }
 
-.user-image, .pet-image, .card img {
+.user-image, .pet-image {
 border-radius:1rem;
+width:100%;
+}
+.card img {
+    border-radius:1rem;
 }

@@ -1,9 +1,10 @@
 @extends('layouts.frontend')
 @section('content')
 <div class="container py-5">
+  
     <div class="row justify-content-center">
         <div class="col-md-8">
-
+            <x-sessions/>
             <div class="card">
           
                 <div class="card-body">
@@ -38,15 +39,30 @@
                             <span class="help-block">{{ trans('cruds.serviceRequest.fields.from_helper') }}</span>
                         </div>
                         <div class="form-group">
-                            <label class="required" for="to">{{ trans('cruds.serviceRequest.fields.to') }}</label>
-                            <input class="form-control datetime" type="text" name="to" id="to" value="{{ old('to', $serviceRequest->to) }}" required>
-                            @if($errors->has('to'))
+                            <label class="required" for="hours">{{ trans('cruds.serviceRequest.fields.to') }}</label>
+                            <select name="hours" id="hours" class="form-control select" required>
+                            <option>Select the number of hours</option>
+                            <option value="1">1 Hour</option>
+                            <option value="2">2 Hours</option>
+                            <option value="3">3 Hours</option>
+                            <option value="4">4 Hours</option>
+                            <option value="5">5 Hours</option>
+                            <option value="6">6 Hours</option>
+                            <option value="7">7 Hours</option>
+                            <option value="8">8 Hours</option>
+                            <option value="9">9 Hours</option>
+                            <option value="10">10 Hours</option>
+                            <option value="11">11 Hours</option>
+                            <option value="12">12 Hours</option>
+			    </select>
+                            @if($errors->has('hours'))
                                 <div class="invalid-feedback">
-                                    {{ $errors->first('to') }}
+                                    {{ $errors->first('hours') }}
                                 </div>
                             @endif
                             <span class="help-block">{{ trans('cruds.serviceRequest.fields.to_helper') }}</span>
                         </div>
+
                         <div class="form-group">
                             <label for="comments">{{ trans('cruds.serviceRequest.fields.comments') }}</label>
                             <textarea class="form-control ckeditor" name="comments" id="comments">{!! old('comments', $serviceRequest->comments) !!}</textarea>
@@ -61,7 +77,7 @@
                        
                         <div class="form-group">
                             <input type="hidden" name="pet_id" value="{{$serviceRequest->pet->id}}">
-                            <input type="hidden" name="zip_code" value="$serviceRequest->zip_code">
+                            <input type="hidden" name="zip_code" value="{{$serviceRequest->zip_code}}">
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <button class="btn btn-primary btn-sm" type="submit">
                                 {{ trans('global.save') }}

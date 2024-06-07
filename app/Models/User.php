@@ -217,4 +217,11 @@ class User extends Authenticatable implements HasMedia
     {
         $this->attributes['two_factor_expires_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
+
+    public function reviews()
+    {
+        return $this->belongsTo(Review::class, 'user_id');
+    }
+
+    
 }

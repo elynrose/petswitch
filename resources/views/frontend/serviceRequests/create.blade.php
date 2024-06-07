@@ -51,7 +51,7 @@
 
                         <div class="form-group">
                             <label class="required" for="zip_code">{{ trans('cruds.serviceRequest.fields.zip_code') }}</label>
-                            <input class="form-control" type="number" name="zip_code" id="zip_code" value="{{ old('zip_code', '') }}" step="1" required>
+                            <input class="form-control" type="number" name="zip_code" id="zip_code" value="{{ old('zip_code', Auth::user()->zip) }}" step="1" required>
                             @if($errors->has('zip_code'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('zip_code') }}
@@ -70,15 +70,30 @@
                             <span class="help-block">{{ trans('cruds.serviceRequest.fields.from_helper') }}</span>
                         </div>
                         <div class="form-group">
-                            <label class="required" for="to">{{ trans('cruds.serviceRequest.fields.to') }}</label>
-                            <input class="form-control datetime" type="text" name="to" id="to" value="{{ old('to') }}" required>
-                            @if($errors->has('to'))
+                            <label class="required" for="hours">{{ trans('cruds.serviceRequest.fields.to') }}</label>
+                            <select name="hours" id="hours" class="form-control select" required>
+                            <option>Select the number of hours</option>
+                            <option value="1">1 Hour</option>
+                            <option value="2">2 Hours</option>
+                            <option value="3">3 Hours</option>
+                            <option value="4">4 Hours</option>
+                            <option value="5">5 Hours</option>
+                            <option value="6">6 Hours</option>
+                            <option value="7">7 Hours</option>
+                            <option value="8">8 Hours</option>
+                            <option value="9">9 Hours</option>
+                            <option value="10">10 Hours</option>
+                            <option value="11">11 Hours</option>
+                            <option value="12">12 Hours</option>
+			    </select>
+                            @if($errors->has('hours'))
                                 <div class="invalid-feedback">
-                                    {{ $errors->first('to') }}
+                                    {{ $errors->first('hours') }}
                                 </div>
                             @endif
                             <span class="help-block">{{ trans('cruds.serviceRequest.fields.to_helper') }}</span>
                         </div>
+                       
                         <div class="form-group">
                             <label for="comments">{{ trans('cruds.serviceRequest.fields.comments') }}</label>
                             <textarea class="form-control ckeditor" name="comments" id="comments">{!! old('comments') !!}</textarea>

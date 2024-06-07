@@ -14,38 +14,9 @@ if(Auth::user()->timezone){
                 <div class="card-body">
                     <h1 class="mb-5">My Requests</h1>
                     @can('service_request_create')
-                    <div style="margin-bottom: 10px;" class="row">
-                        <div class="col-lg-6 mb-5">
-                            <a class="btn btn-success btn-sm" href="{{ route('frontend.service-requests.create') }}">
-                                {{ trans('global.add') }} {{ trans('cruds.serviceRequest.title_singular') }}
-                            </a>
-                            <a class="btn btn-info btn-sm" href="{{ route('frontend.home') }}">
-                                {{ trans('global.browse') }} {{ trans('cruds.serviceRequest.title') }}
-                            </a>
-                        </div>
-                        <div class="col-lg-6 mb-5">
-                        </div>
-                    </div>
+                    <x-card-header-buttons />
                     @endcan
-                    <form action="{{ route('frontend.service-requests.index') }}" method="GET" class="mb-3">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <input type="text" name="zip" class="form-control" placeholder="{{ __('Enter Zip Code') }}" required>
-                            </div>
-                            <div class="col-md-4">
-                                <select name="radius" class="form-control" required>
-                                    <option value="5" {{ request()->input('radius') == 5 ? 'selected' : '' }}>{{ __('5 miles') }}</option>
-                                    <option value="10" {{ request()->input('radius') == 10 ? 'selected' : '' }}>{{ __('10 miles') }}</option>
-                                    <option value="25" {{ request()->input('radius') == 25 ? 'selected' : '' }}>{{ __('25 miles') }}</option>
-                                    <option value="50" {{ request()->input('radius') == 50 ? 'selected' : '' }}>{{ __('50 miles') }}</option>
-                                    <option value="100" {{ request()->input('radius') == 100 ? 'selected' : '' }}>{{ __('100 miles') }}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-sm btn-primary" style="max-height:">{{ __('Search') }}</button>
-                            </div>
-                        </div>
-                    </form>
+                 <!--   <x-search-form /> -->
                 </div>
             </div>
             <div class="card">
@@ -62,7 +33,6 @@ if(Auth::user()->timezone){
                                     if($booking){
                                         $userPhoto = App\Models\User::where('id', $booking->user_id)->first();
                                     }
-
                                     @endphp
                                     <div style="position: relative;">
                                         @if($serviceRequest->pet->photos->count() > 0)
@@ -95,7 +65,7 @@ if(Auth::user()->timezone){
                                             @endcan  
                                         @endif
                                     </div>
-                                    <h4>{{ ucfirst($serviceRequest->service->name) ?? '' }} {{_('for')}} {{ $serviceRequest->pet->name ?? '' }}</h4>
+                                    <h4 class="mt-3">{{ ucfirst($serviceRequest->service->name) ?? '' }} {{_('for')}} {{ $serviceRequest->pet->name ?? '' }}</h4>
                                     <p class="small text-muted"> {{ __('Posted') }} {{ $serviceRequest->created_at->diffForHumans() }} 
 @if($booking) and booked by <a href="{{ route('frontend.users.show', $booking->user->id) }}" target="_blank">{{ $booking->user->name ?? '' }} @endif</a>
 </p>
@@ -109,7 +79,7 @@ if(Auth::user()->timezone){
 
                                     @endphp
 
- @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
+ @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $serviceRequest->closed==0)
 <p class="badge badge-success">{{ __('New') }}</p>
 @elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
 <p class="badge badge-success">{{ __('Booked') }}</p>
@@ -117,7 +87,7 @@ if(Auth::user()->timezone){
 <p class="badge badge-info">{{ __('Ongoing') }}</p>
 @elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
 <p class="badge badge-info">{{ __('Upcoming') }}</p>
-@elseif($serviceRequest->pending==2 && $serviceRequest->decline == 0  && $serviceRequest->to < $today && $serviceRequest->closed == 1)
+@elseif($serviceRequest->pending==2 && $serviceRequest->decline == 0  && $toDateTime < $today && $serviceRequest->closed == 1)
 <p class="badge badge-warning">{{ __('Completed') }}</p>
 @endif
 

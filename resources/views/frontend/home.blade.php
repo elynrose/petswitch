@@ -26,25 +26,7 @@ date_default_timezone_set(Auth::user()->timezone);
                         </div>
                     </div>
                     @endcan
-                    <form action="{{ route('frontend.home') }}" method="GET" class="">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-12 mb-3">
-                                <input type="text" name="zip" class="form-control" placeholder="Enter Zip Code" required>
-                            </div>
-                            <div class="col-md-4 col-sm-12 mb-3">
-                                <select name="radius" class="form-control mb-2" required>
-                                    <option value="5" {{ request()->input('radius') == 5 ? 'selected' : '' }}>5 miles</option>
-                                    <option value="10" {{ request()->input('radius') == 10 ? 'selected' : '' }}>10 miles</option>
-                                    <option value="25" {{ request()->input('radius') == 25 ? 'selected' : '' }}>25 miles</option>
-                                    <option value="50" {{ request()->input('radius') == 50 ? 'selected' : '' }}>50 miles</option>
-                                    <option value="100" {{ request()->input('radius') == 100 ? 'selected' : '' }}>100 miles</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-2">
-                                <button type="submit" class="btn btn-md btn-primary">Search</button>
-                            </div>
-                        </div>
-                    </form>
+                    <x-search-form />
                 </div>
             </div>
             <div class="card">

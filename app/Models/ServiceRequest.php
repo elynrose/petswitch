@@ -31,6 +31,7 @@ class ServiceRequest extends Model implements HasMedia
         'zip_code',
         'from',
         'to',
+        'hours',
         'comments',
         'pending',
         'closed',

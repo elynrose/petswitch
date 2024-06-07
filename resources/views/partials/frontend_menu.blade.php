@@ -33,9 +33,9 @@
                 <li class="nav-item"><a class="nav-link link mbr-white text-white display-4" href="{{ route('frontend.service-requests.index') }}"><span class="mbri-bulleted-list mbr-iconfont mbr-iconfont-btn"></span>&nbsp;My Requests</a></li>
                 <li class="nav-item"><a class="nav-link link mbr-white text-white display-4" href="{{ route('frontend.bookings.index') }}"><span class="mdi-notification-event-note mbr-iconfont mbr-iconfont-btn"></span>Bookings</a></li>
                 <li class="nav-item"><a class="nav-link link mbr-white text-white display-4" href="{{ route('frontend.users.index') }}"><span class="mbrib-user mbr-iconfont mbr-iconfont-btn"></span>&nbsp;Members<br></a></li>
-                <li class="nav-item"><a class="nav-link link mbr-white text-white display-4" href="{{ route('frontend.credits.index') }}"><span class="mbrib-star mbr-iconfont mbr-iconfont-btn"></span>&nbsp; 
+                <li class="nav-item"><a class="nav-link link mbr-white text-white display-4" href="{{ route('frontend.credits.index') }}"><span class="mbrib-clock mbr-iconfont mbr-iconfont-btn"></span>&nbsp; 
                         <!--Get the sum of credits for this user--> 
-                     Credits: {{ (App\Models\Credit::where('user_id', Auth::user()->id)->orderBy('id','desc')->first())->points ?? 0}}
+                     Balance: {{ (App\Models\Credit::where('user_id', Auth::user()->id)->orderBy('id','desc')->first())->points ?? 0}} {{_('Hrs')}}
                     </a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link link mbr-white dropdown-toggle text-white display-4" href="#" data-toggle="dropdown-submenu" aria-expanded="false"><span class="mobi-mbri mobi-mbri-user-2 mbr-iconfont mbr-iconfont-btn"></span>&nbsp;{{Auth::user()->name ?? 'Guest'}}</a><div class="dropdown-menu"><a class="mbr-white dropdown-item text-white display-4" href="{{ route('frontend.profile.index') }}"><span class="mobi-mbri mobi-mbri-user mbr-iconfont mbr-iconfont-btn"></span>Profile</a><a href="#" class="mbr-white dropdown-item text-white display-4" onclick="event.preventDefault(); document.getElementById('logoutform').submit();"><span class="mobi-mbri mobi-mbri-logout mbr-iconfont mbr-iconfont-btn"></span>Logout</a></div>

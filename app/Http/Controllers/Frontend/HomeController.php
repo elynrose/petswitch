@@ -53,6 +53,7 @@ class HomeController
 
     $requests = ServiceRequest::with(['service', 'pet', 'user'])
         ->where('closed', 0)
+        ->where('pending', 0 )
         ->whereDate('from', '>=', now())
         ->whereDate('to', '<=', now()->addMonth(1))
         ->orderBy('created_at', 'asc')

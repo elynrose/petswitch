@@ -25,18 +25,20 @@ class StoreServiceRequestRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'zip_code' => [
+            'hours' => [
                 'required',
                 'integer',
-                'min:-2147483648',
-                'max:2147483647',
+            ],
+            'zip_code' => [
+                'required',
+                'string',
+                'max:5',
             ],
             'from' => [
                 'required',
                 'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
             ],
             'to' => [
-                'required',
                 'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
             ],
             'comments' => [
