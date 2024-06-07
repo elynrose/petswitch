@@ -25,7 +25,7 @@ if(Auth::user()->timezone){
                     @foreach($serviceRequests as $key => $serviceRequest)
                         <div class="card-body shadow-sm mb-5">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-3 col-sm-12">
                                     @php
                                     // Get the booking for the service request
                                     $booking = App\Models\Booking::where('service_request_id', $serviceRequest->id)->first();
@@ -36,14 +36,14 @@ if(Auth::user()->timezone){
                                     @endphp
                                     <div style="position: relative;">
                                         @if($serviceRequest->pet->photos->count() > 0)
-                                            <img src="{{ $serviceRequest->pet->photos->getUrl('preview') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
+                                            <img src="{{ $serviceRequest->pet->photos->getUrl('preview') }}" class="pet-image shadow" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
                                         @else
                                             <img src="{{ asset('/assets/images/User.png') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
                                         @endif
                                         @if($booking && !is_null($userPhoto->profile))
-                                            <img src="{{ $userPhoto->profile_photo->getUrl('thumb') }}" class="user-image shadow" data-id="{{ $userPhoto->id }}" id="user-img-{{ $userPhoto->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%;">
+                                            <img src="{{ $userPhoto->profile_photo->getUrl('thumb') }}" class="user-image hang" data-id="{{ $userPhoto->id }}" id="user-img-{{ $userPhoto->id }}">
                                         @else
-                                            <img src="{{ asset('/assets/images/User.png') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%;">
+                                            <img src="{{ asset('/assets/images/User.png') }}" class="pet-image hang" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
                                         @endif
                                         <!--Get the pets rating-->
                                         @php
@@ -52,7 +52,7 @@ if(Auth::user()->timezone){
                                         @endphp
                                     </div>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-9 col-sm-12">
                                     <div class="pull-right">
                                         @if(Auth::id()==$serviceRequest->user_id)  
                                             @can('service_request_delete')
