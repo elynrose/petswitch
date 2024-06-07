@@ -242,3 +242,7 @@ border-radius:1rem;
 .card img {
     border-radius:1rem;
 }
+
+.bg-dark{
+    background-color: #000!important;
+}

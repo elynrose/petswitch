@@ -79,17 +79,21 @@ if(Auth::user()->timezone){
 
                                     @endphp
 
- @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $serviceRequest->closed==0)
-<p class="badge badge-success">{{ __('New') }}</p>
-@elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-<p class="badge badge-success">{{ __('Booked') }}</p>
-@elseif($fromDateTime <= $today && $toDateTime >= $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1 )
-<p class="badge badge-info">{{ __('Ongoing') }}</p>
-@elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-<p class="badge badge-info">{{ __('Upcoming') }}</p>
-@elseif($serviceRequest->pending==2 && $serviceRequest->decline == 0  && $toDateTime < $today && $serviceRequest->closed == 1)
-<p class="badge badge-warning">{{ __('Completed') }}</p>
-@endif
+                                    <div class="badge-container mb-3">
+                    @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
+                        <span class="badge bg-success text-white">New</span>
+                    @elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
+                        <span class="badge bg-success text-white">Booked</span>
+                    @elseif($toDateTime < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
+                        <span class="badge bg-danger text-white">Expired</span>
+                    @elseif($fromDateTime <= $today && $toDateTime >= $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
+                        <span class="badge bg-info text-white">Ongoing</span>
+                    @elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
+                        <span class="badge bg-info text-white">Upcoming</span>
+                    @elseif($serviceRequest->pending == 2 && $serviceRequest->decline == 0 && $serviceRequest->to < $today)
+                        <span class="badge bg-warning">Completed</span>
+                    @endif
+                </div>
 
 
 
