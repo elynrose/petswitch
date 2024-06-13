@@ -90,7 +90,8 @@ date_default_timezone_set(Auth::user()->timezone);
                 </div>
                    <div class="row">  
                     <div class="col-md-6">
-                   
+                    <p><strong>Zip code:</strong> {{ $serviceRequest->zip_code ?? '' }}</p>
+
                 <p><strong>Pickup:</strong> {{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
                     </div>
                     <div class="col-md-6">
