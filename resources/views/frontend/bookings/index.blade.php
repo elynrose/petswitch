@@ -98,7 +98,6 @@ date_default_timezone_set(Auth::user()->timezone);
 
                           @endif
 
-                          @endif
                           
                         @endcan
                       </p>
@@ -171,6 +170,9 @@ date_default_timezone_set(Auth::user()->timezone);
   </div>
 </div>
 <!--end of modal-->
+
+@endif
+
           @endforeach
         @else
           <h3>No bookings?</h3>
