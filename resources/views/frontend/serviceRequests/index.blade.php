@@ -16,12 +16,10 @@ if(Auth::user()->timezone){
                     @can('service_request_create')
                     <x-card-header-buttons />
                     @endcan
-                 <!--   <x-search-form /> -->
                 </div>
             </div>
             <div class="card">
                 @if($serviceRequests->count())
-                
                     @foreach($serviceRequests as $key => $serviceRequest)
                         <div class="card-body shadow-sm mb-5">
                             <div class="row">
@@ -45,12 +43,12 @@ if(Auth::user()->timezone){
                                         @else
                                             <img src="{{ asset('/assets/images/User.png') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%; z-index:9999;">
                                         @endif
-                                        <!--Get the pets rating-->
-                                        @php
-                                        $rating = App\Models\Review::where('user_id', $serviceRequest->user_id)->avg('rating');
-                                        $rating_count = App\Models\Review::where('user_id', $serviceRequest->user_id)->count();
-                                        @endphp
                                     </div>
+                                    <!--Get the pets rating-->
+                                    @php
+                                    $rating = App\Models\Review::where('user_id', $serviceRequest->user_id)->avg('rating');
+                                    $rating_count = App\Models\Review::where('user_id', $serviceRequest->user_id)->count();
+                                    @endphp
                                 </div>
                                 <div class="col-sm-12 col-md-9 col-lg-9">
                                     <div class="pull-right">
@@ -67,132 +65,131 @@ if(Auth::user()->timezone){
                                     </div>
                                     <h4 class="mt-3">{{ ucfirst($serviceRequest->service->name) ?? '' }} {{_('for')}} {{ $serviceRequest->pet->name ?? '' }}</h4>
                                     <p class="small text-muted"> {{ __('Posted') }} {{ $serviceRequest->created_at->diffForHumans() }} 
-@if($booking) and booked by <a href="{{ route('frontend.users.show', $booking->user->id) }}" target="_blank">{{ $booking->user->name ?? '' }} @endif</a>
-</p>
-                                   <!--display pet rating, color the stars based on the rating-->
-                                    @if($booking)
-                                    
-                                    @php
-                                        $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
-                                        $fromDateTime = \Carbon\Carbon::parse($serviceRequest->from)->timezone(Auth::user()->timezone);
-                                        $toDateTime = \Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone);
+                                        @if($booking) and booked by <a href="{{ route('frontend.users.show', $booking->user->id) }}" target="_blank">{{ $booking->user->name ?? '' }}</a>
+                                        @endif
+                                    </p>
+                                    <!--display pet rating, color the stars based on the rating-->
+                                   
+                                        @php
+                                            $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
+                                            $fromDateTime = \Carbon\Carbon::parse($serviceRequest->from)->timezone(Auth::user()->timezone);
+                                            $toDateTime = \Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone);
+                                        @endphp
 
-                                    @endphp
-
-                                    <div class="badge-container mb-3">
-                    @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
-                        <span class="badge bg-success text-white">New</span>
-                    @elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                        <span class="badge bg-success text-white">Booked</span>
-                    @elseif($toDateTime < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
-                        <span class="badge bg-danger text-white">Expired</span>
-                    @elseif($fromDateTime <= $today && $toDateTime >= $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                        <span class="badge bg-info text-white">Ongoing</span>
-                    @elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                        <span class="badge bg-info text-white">Upcoming</span>
-                    @elseif($serviceRequest->pending == 2 && $serviceRequest->decline == 0 && $serviceRequest->to < $today)
-                        <span class="badge bg-warning">Completed</span>
-                    @endif
-                </div>
-
-
-
-
-                                    @endif
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p><strong>{{ __('Pickup') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
-                                           
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p><strong>{{ __('Drop-off') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->to)->format('l, F j, Y, g:i A') ?? '' }}</p>  
-                                            <p>
-                                                @if($serviceRequest->pending==1 && Auth::id()==$serviceRequest->user_id && $serviceRequest->to < $today) 
-                                                    <form action="{{ route('frontend.bookings.completed', $serviceRequest->id) }}" method="POST" onsubmit="return confirm(' {{$userPhoto->name ?? 'User'}}  {{ __('global.points_awarded_start') }}{{ __('global.points_awarded_end') }} ');" style="display: inline-block;">
-                                                        @method('POST')
-                                                        @csrf 
-                                                        <input type="hidden" name="service_request_id" value="{{$serviceRequest->id}}">
-                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                        <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-check"></i> &nbsp;{{ __('cruds.serviceRequest.mark_as_completed') }}</button>
-                                                    </form>
-@if($serviceRequest->closed==2 && $serviceRequest->closed==1 && $booking && !$booking->review)
-    <a href="" class="btn btn-sm btn-default" data-toggle="modal" data-target="#reviewModal" data-booking-id="{{ $booking->id }}"><i class="fas fa-star"></i>&nbsp; {{ trans('cruds.serviceRequest.add_review') }}</a>
-@endif
-@if($serviceRequest->closed==0) 
-    <a class="btn btn-primary btn-sm" href="{{ route('frontend.service-requests.show', $serviceRequest->id) }}">{{ __('global.view') }}</a> 
-@endif
-
-@if(\Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone) < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
-    <p class="small red">{{ trans('cruds.serviceRequest.expired_request')}} </p> 
-@endif
-
-
-@if(!is_null($booking))
-                            <!--create a popup modal for the reviews form and include jquery to send it to reviews.store in reviews controller -->
-            <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div id="result"></div>
-    <div class="modal-content">
-      <form action="{{ route('frontend.reviews.store') }}" method="POST">
-        @csrf
-        <div class="modal-header">
-          <h5 class="modal-title" id="reviewModalLabel">Write a review about the time {{$booking->service_request->pet->name}} spent with {{$booking->service_request->user->name}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-        <div class="rating-stars small">
-             {{$booking->service_request->user->name}}'s Rating:
-                                        @for($i = 1; $i <= 5; $i++)
-                                            @if($rating >= $i)
-                                                <label class="star" style="color: gold;">&#9733;</label>
-                                            @else
-                                                <label class="star" style="color:gray;">&#9733;</label>
+                                        <div class="badge-container mb-3">
+                                            @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
+                                                <span class="badge bg-success text-white">New</span>
+                                            @elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
+                                                <span class="badge bg-success text-white">Booked</span>
+                                            @elseif($toDateTime < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
+                                                <span class="badge bg-danger text-white">Expired</span>
+                                            @elseif($fromDateTime <= $today && $toDateTime >= $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
+                                                <span class="badge bg-info text-white">Ongoing</span>
+                                            @elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
+                                                <span class="badge bg-info text-white">Upcoming</span>
+                                            @elseif($serviceRequest->pending == 2 && $serviceRequest->decline == 0 && $serviceRequest->to < $today)
+                                                <span class="badge bg-warning">Completed</span>
                                             @endif
-                                        @endfor
-                                        ({{$rating_count ? $rating_count.' reviews' : 'No reviews'}})
                                         </div>
-          <p class="small">We would like to know a little more about your time with {{ $booking->service_request->user->name }}.</p>
-          <input type="hidden" name="booking_id" id="booking_id">
-            <div class="form-group  row">
-            <div class="col-md-12">
-              <div class="rating-stars">
-                <p class="small">How many stars do you think {{ $booking->service_request->user->name }} deserves.</p>
-           <input type="radio"   name="rating" id="rating-1" value="1" >
-              <label for="rating-1" class="star px-2 sm-2">One &#9733;</label> 
-              <input type="radio"  name="rating" id="rating-2" value="2" >
-              <label for="rating-2" class="star px-2 sm-2">Two &#9733;</label>
-              <input type="radio"  name="rating" id="rating-3" value="3" >
-              <label for="rating-3" class="star px-2 sm-2">Three&#9733;</label>
-               <input type="radio"   name="rating" id="rating-4" value="4" >
-              <label for="rating-4" class="star px-2 sm-2">Four &#9733;</label>
-              <input type="radio"   name="rating" id="rating-5" value="5" >
-              <label for="rating-5" class="star px-2 sm-2">Five &#9733;</label>
-              </div>
-            </div>
-            </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <p class="small">Write a review</p>
-              <textarea name="comment" id="comments" class="form-control ckeditor" required></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="hidden" name="service_request_id" value="{{ $booking->service_request->id }}">
-          <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <input type="hidden" name="booking_id" value="{{ $booking->id }}">
-          <button type="submit" class="btn btn-primary btn-sm">{{ _('Submit') }}</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!--end of modal-->
-@endif
+                                   
+                                  
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>{{ __('Pickup') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>{{ __('Drop-off') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->to)->format('l, F j, Y, g:i A') ?? '' }}</p>  
+                                                <p>
+                                                    @if($serviceRequest->pending==1 && Auth::id()==$serviceRequest->user_id && $serviceRequest->to < $today) 
+                                                        <form action="{{ route('frontend.bookings.completed', $serviceRequest->id) }}" method="POST" onsubmit="return confirm(' {{$userPhoto->name ?? 'User'}}  {{ __('global.points_awarded_start') }}{{ __('global.points_awarded_end') }} ');" style="display: inline-block;">
+                                                            @method('POST')
+                                                            @csrf 
+                                                            <input type="hidden" name="service_request_id" value="{{$serviceRequest->id}}">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-check"></i> &nbsp;{{ __('cruds.serviceRequest.mark_as_completed') }}</button>
+                                                        </form>
+                                                    @elseif($serviceRequest->pending==2 && $serviceRequest->closed==1 && !$booking->review)
+                                                        <a href="" class="btn btn-sm btn-default" data-toggle="modal" data-target="#reviewModal" data-booking-id="{{ $booking->id }}"><i class="fas fa-star"></i>&nbsp; {{ trans('cruds.serviceRequest.add_review') }}</a>
+                                                    @endif
+                                                    @if($serviceRequest->closed==0) 
+                                                        <a class="btn btn-primary btn-sm" href="{{ route('frontend.service-requests.show', $serviceRequest->id) }}">{{ __('global.view') }}</a> 
+                                                    @endif
 
+                                                    @if(\Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone) < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
+                                                        <p class="small red">{{ trans('cruds.serviceRequest.expired_request')}} </p> 
+                                                    @endif
+                                                </p>                                              
+                                            </div>
+                                        </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        @if(!is_null($booking))
+                            <!--create a popup modal for the reviews form and include jquery to send it to reviews.store in reviews controller -->
+                            <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div id="result"></div>
+                                    <div class="modal-content">
+                                        <form action="{{ route('frontend.reviews.store') }}" method="POST">
+                                            @csrf
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="reviewModalLabel">Write a review about the time {{$booking->service_request->pet->name}} spent with {{$booking->service_request->user->name}}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="rating-stars small">
+                                                    {{$booking->service_request->user->name}}'s Rating:
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        @if($rating >= $i)
+                                                            <label class="star" style="color: gold;">&#9733;</label>
+                                                        @else
+                                                            <label class="star" style="color:gray;">&#9733;</label>
+                                                        @endif
+                                                    @endfor
+                                                    ({{$rating_count ? $rating_count.' reviews' : 'No reviews'}})
+                                                </div>
+                                                <p class="small">We would like to know a little more about your time with {{ $booking->service_request->user->name }}.</p>
+                                                <input type="hidden" name="booking_id" id="booking_id">
+                                                <div class="form-group  row">
+                                                    <div class="col-md-12">
+                                                        <div class="rating-stars">
+                                                            <p class="small">How many stars do you think {{ $booking->service_request->user->name }} deserves.</p>
+                                                            <input type="radio" name="rating" id="rating-1" value="1" >
+                                                            <label for="rating-1" class="star px-2 sm-2">One &#9733;</label> 
+                                                            <input type="radio" name="rating" id="rating-2" value="2" >
+                                                            <label for="rating-2" class="star px-2 sm-2">Two &#9733;</label>
+                                                            <input type="radio" name="rating" id="rating-3" value="3" >
+                                                            <label for="rating-3" class="star px-2 sm-2">Three&#9733;</label>
+                                                            <input type="radio" name="rating" id="rating-4" value="4" >
+                                                            <label for="rating-4" class="star px-2 sm-2">Four &#9733;</label>
+                                                            <input type="radio" name="rating" id="rating-5" value="5" >
+                                                            <label for="rating-5" class="star px-2 sm-2">Five &#9733;</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <p class="small">Write a review</p>
+                                                        <textarea name="comment" id="comments" class="form-control ckeditor" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="service_request_id" value="{{ $booking->service_request->id }}">
+                                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="booking_id" value="{{ $booking->id }}">
+                                                <button type="submit" class="btn btn-primary btn-sm">{{ _('Submit') }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end of modal-->
+                        @endif
                     @endforeach
                 @else
                     <div class="card-body">
@@ -215,135 +212,135 @@ if(Auth::user()->timezone){
 @endsection
 
 @section('scripts')
-  @parent
-<script>
-    $(document).ready(function() {
-        $('.rating-stars label').on('click', function() {
-            var rating = $(this).prev('input').val();
-            // Uncheck all stars
-            $('.rating-stars input').prop('checked', false);
-            // Check the selected star
-            $(this).prev('input').prop('checked', true);
-            // Reset color of all stars
-            $('.rating-stars label').css('color', 'black');
-            // Color the stars up to the selected rating
-            for(var i = 1; i <= rating; i++) {
-                $('#rating-' + i).next('label').css('color', 'gold');
-            }
+    @parent
+    <script>
+        $(document).ready(function() {
+            $('.rating-stars label').on('click', function() {
+                var rating = $(this).prev('input').val();
+                // Uncheck all stars
+                $('.rating-stars input').prop('checked', false);
+                // Check the selected star
+                $(this).prev('input').prop('checked', true);
+                // Reset color of all stars
+                $('.rating-stars label').css('color', 'black');
+                // Color the stars up to the selected rating
+                for(var i = 1; i <= rating; i++) {
+                    $('#rating-' + i).next('label').css('color', 'gold');
+                }
+            });
         });
-    });
-</script>
+    </script>
 
-<script>
-    $(document).ready(function() {
-        $('#bookingForm').submit(function(e) {
-            e.preventDefault();
-            var form = $(this);
-            var submitButton = form.find('#bookButton');
+    <script>
+        $(document).ready(function() {
+            $('#bookingForm').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var submitButton = form.find('#bookButton');
 
-            // Disable the submit button and show processing status
-            submitButton.prop('disabled', true).val('Processing...');
+                // Disable the submit button and show processing status
+                submitButton.prop('disabled', true).val('Processing...');
 
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(),
-                success: function(response) {
-                    if(response.success) {
-                        alert('Booking successful');
-                        location.reload();
-                    } else {
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        if(response.success) {
+                            alert('Booking successful');
+                            location.reload();
+                        } else {
+                            alert('Booking failed');
+                        }
+                    },
+                    error: function() {
                         alert('Booking failed');
                     }
-                },
-                error: function() {
-                    alert('Booking failed');
-                }
+                });
+            });
+
+            $('#reviewModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var bookingId = button.data('booking-id');
+                var modal = $(this);
+                modal.find('#booking_id').val(bookingId);
+            });
+
+            $('#reviewModal form').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var submitButton = form.find('button[type="submit"]');
+
+                // Disable the submit button and show processing status
+                submitButton.prop('disabled', true).text('Processing...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        if(response.status=='success') {
+                            /// json success response with success class
+                            $('#result').html('<div class="alert alert-success">' + response.message + '</div>');
+                            submitButton.prop('disabled', true).text('Done');
+
+                        } else {
+                            /* Json error response */
+                            $('#result').html('<div class="alert alert-error">' + response.message + '</div>');
+                            
+                            submitButton.prop('disabled', false).text('Try again...');
+
+                        }
+                    },
+                    error: function() {
+                        $('#result').html('<div class="alert alert-error">An unknown error occoured. Please try again later.</div>');
+
+                    }
+                });
             });
         });
+    </script>
 
-        $('#reviewModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var bookingId = button.data('booking-id');
-            var modal = $(this);
-            modal.find('#booking_id').val(bookingId);
-        });
-
-        $('#reviewModal form').submit(function(e) {
-            e.preventDefault();
-            var form = $(this);
-            var submitButton = form.find('button[type="submit"]');
-
-            // Disable the submit button and show processing status
-            submitButton.prop('disabled', true).text('Processing...');
-
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(),
-                success: function(response) {
-                    if(response.status=='success') {
-                        /// json success response with success class
-                        $('#result').html('<div class="alert alert-success">' + response.message + '</div>');
-                        submitButton.prop('disabled', true).text('Done');
-
-                    } else {
-                        /* Json error response */
-                        $('#result').html('<div class="alert alert-error">' + response.message + '</div>');
-                        
-                        submitButton.prop('disabled', false).text('Try again...');
-
+    <script>
+        $(function () {
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            @can('service_request_delete')
+                let deleteButtonTrans = '{{ __('global.datatables.delete') }}'
+                let deleteButton = {
+                    text: deleteButtonTrans,
+                    url: "{{ route('frontend.service-requests.massDestroy') }}",
+                    className: 'btn-danger',
+                    action: function (e, dt, node, config) {
+                        var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                            return $(entry).data('entry-id')
+                        });
+                        if (ids.length === 0) {
+                            alert('{{ __('global.datatables.zero_selected') }}')
+                            return
+                        }
+                        if (confirm('{{ __('global.areYouSure') }}')) {
+                            $.ajax({
+                                headers: {'x-csrf-token': _token},
+                                method: 'POST',
+                                url: config.url,
+                                url: config.url,
+                                data: { ids: ids, _method: 'DELETE' }
+                            })
+                            .done(function () { location.reload() })
+                        }
                     }
-                },
-                error: function() {
-                    $('#result').html('<div class="alert alert-error">An unknown error occoured. Please try again later.</div>');
-
                 }
+                dtButtons.push(deleteButton)
+            @endcan
+            $.extend(true, $.fn.dataTable.defaults, {
+                orderCellsTop: true,
+                order: [[ 1, 'desc' ]],
+                pageLength: 100,
             });
-        });
-    });
-</script>
-
-<script>
-    $(function () {
-        let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-        @can('service_request_delete')
-            let deleteButtonTrans = '{{ __('global.datatables.delete') }}'
-            let deleteButton = {
-                text: deleteButtonTrans,
-                url: "{{ route('frontend.service-requests.massDestroy') }}",
-                className: 'btn-danger',
-                action: function (e, dt, node, config) {
-                    var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-                        return $(entry).data('entry-id')
-                    });
-                    if (ids.length === 0) {
-                        alert('{{ __('global.datatables.zero_selected') }}')
-                        return
-                    }
-                    if (confirm('{{ __('global.areYouSure') }}')) {
-                        $.ajax({
-                            headers: {'x-csrf-token': _token},
-                            method: 'POST',
-                            url: config.url,
-                            url: config.url,
-                            data: { ids: ids, _method: 'DELETE' }
-                        })
-                        .done(function () { location.reload() })
-                    }
-                }
-            }
-            dtButtons.push(deleteButton)
-        @endcan
-        $.extend(true, $.fn.dataTable.defaults, {
-            orderCellsTop: true,
-            order: [[ 1, 'desc' ]],
-            pageLength: 100,
-        });
-        let table = $('.datatable-ServiceRequest:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-        $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-            $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-        });
-    })
-</script>
+            let table = $('.datatable-ServiceRequest:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+            });
+        })
+    </script>
 @endsection
