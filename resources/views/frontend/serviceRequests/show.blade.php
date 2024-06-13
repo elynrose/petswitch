@@ -11,7 +11,7 @@ if(Auth::user()->timezone){
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                @if($serviceRequest->booking)
+              
                     @php
                         $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
                         $fromDateTime = \Carbon\Carbon::parse($serviceRequest->from)->timezone(Auth::user()->timezone);
@@ -19,7 +19,7 @@ if(Auth::user()->timezone){
                         $rating = App\Models\PetReview::where('pet_id', $serviceRequest->pet->id)->avg('rating');
                         $rating_count = App\Models\PetReview::where('pet_id', $serviceRequest->pet->id)->count();
                     @endphp
-                @endif
+            
                 <div class="media-container-row">
                     <div class="media-content">
                         @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)

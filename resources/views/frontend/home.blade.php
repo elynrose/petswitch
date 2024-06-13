@@ -65,13 +65,13 @@ date_default_timezone_set(Auth::user()->timezone);
                 @else
                     <p class="small text-muted">({{$rating_count ? $rating_count.' reviews' : 'No reviews'}})</p>
                 @endif
-                @if($serviceRequest->booking)
+              
                     @php
                         $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
                         $fromDateTime = \Carbon\Carbon::parse($serviceRequest->from)->timezone(Auth::user()->timezone);
                         $toDateTime = \Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone);
                     @endphp
-                @endif
+            
                 <div class="badge-container mb-3">
                     @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
                         <span class="badge bg-success text-white">New</span>
