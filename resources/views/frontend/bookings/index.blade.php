@@ -15,12 +15,12 @@ date_default_timezone_set(Auth::user()->timezone);
         <h1 class="mb-5">{{ trans('cruds.booking.title')}}</h1>
 
      
-        @if($bookings->count() > 0)
+        @if($bookings)
 
           @foreach($bookings as $key => $booking)
             @php
-              $from = \Carbon\Carbon::parse($booking->service_request->from)->format('l, F j, Y, g:i A');
-              $to = \Carbon\Carbon::parse($booking->service_request->to)->format('l, F j, Y, g:i A');
+              $from = \Carbon\Carbon::parse($booking->service_requests->from)->format('l, F j, Y, g:i A');
+              $to = \Carbon\Carbon::parse($booking->service_requests->to)->format('l, F j, Y, g:i A');
               $today =  now()->timezone(Auth::user()->timezone);
             @endphp
 
@@ -37,6 +37,8 @@ date_default_timezone_set(Auth::user()->timezone);
                 <div class="col-md-9">
                   <h4>{{ ucfirst($booking->service_request->service->name) ?? '' }} {{_('for')}} {{ $booking->service_request->pet->name ?? '' }}</h4><hr>
                   <p class="small text-muted"> Posted {{ $booking->service_request->created_at->diffForHumans() }}</p>
+             
+             
                   @if($booking)              
                       @php
                           $fromDateTime = \Carbon\Carbon::parse($booking->service_request->from)->timezone(Auth::user()->timezone);

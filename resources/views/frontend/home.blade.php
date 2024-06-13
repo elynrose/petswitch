@@ -42,7 +42,7 @@ date_default_timezone_set(Auth::user()->timezone);
                 <div class="card shadow-sm mb-5">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-3 col-sm-12 pt-4 text-center">
+            <div class="col-md-3 col-sm-12 text-center">
                 <div class="position-relative">
                     @if($serviceRequest->user->profile_photo)
                         <img src="{{ $serviceRequest->user->profile_photo->getUrl('thumb') }}" class="user-image shadow" data-id="{{ $serviceRequest->user->id }}" id="user-img-{{ $serviceRequest->user->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%;">
@@ -53,6 +53,7 @@ date_default_timezone_set(Auth::user()->timezone);
                 </div>
             </div>
             <div class="col-md-9">
+               
                 <h4 class="mt-1">{{ $serviceRequest->user->name ?? ''}} needs {{ $serviceRequest->service->name ?? '' }} for {{ $serviceRequest->pet->name ?? '' }}</h4>
                 <p class="small text-muted">Posted {{ $serviceRequest->created_at->diffForHumans() }}</p>
                 @if($rating)
@@ -87,18 +88,23 @@ date_default_timezone_set(Auth::user()->timezone);
                         <span class="badge bg-warning">Completed</span>
                     @endif
                 </div>
-                <div class="details">
-                    <p><strong>Zip Code:</strong> {{ $serviceRequest->zip_code ?? '' }}</p>
-                    <p><strong>Pickup:</strong> {{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
+                   <div class="row">  
+                    <div class="col-md-6">
+                   
+                <p><strong>Pickup:</strong> {{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
+                    </div>
+                    <div class="col-md-6">
                     <p><strong>Drop-off:</strong> {{ \Carbon\Carbon::parse($serviceRequest->to)->format('l, F j, Y, g:i A') ?? '' }}</p>
-                </div>
-                <div class="actions">
+                    <div class="actions">
                     @if($serviceRequest->closed == 1)
                         <a class="btn btn-success btn-sm" href="{{ route('frontend.service-requests.completed', $serviceRequest->id) }}">{{trans('global.completed')}}</a>
                     @elseif($serviceRequest->closed == 0)
                         <a class="btn btn-primary btn-sm" href="{{ route('frontend.service-requests.show', $serviceRequest->id) }}">{{trans('global.view')}}</a>
                     @endif
                    
+                </div>
+                
+                </div>
                 </div>
             </div>
         </div>

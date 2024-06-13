@@ -91,5 +91,6 @@ class ServiceRequest extends Model implements HasMedia
     {
         return $this->belongsTo(Booking::class, 'user_id');
     }
+
     
 }
