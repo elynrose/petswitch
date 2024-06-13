@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\ZipCodes;
 
 
 class ServiceRequestsController extends Controller
@@ -303,6 +304,7 @@ class ServiceRequestsController extends Controller
         $members = User::with(['roles', 'media'])
             ->where('id', '!=', Auth::id())
             ->get();
+
         $nearbyMembers = [];
         $zip = $this->getZipCode($zip);
         $zipLat = $zip['lat'];
@@ -321,10 +323,18 @@ class ServiceRequestsController extends Controller
 
     public function getZipCode($zip)
     {
-        $url = "https://api.zippopotam.us/us/$zip";
-        $response = json_decode(file_get_contents($url));
+        //fetch from zip_codes in database
+        $places = ZipCodes::where('zip', $zip)->first();
+        if ($places) {
+            return ['lat' => $places->latitude, 'lon' => $places->longitude];
+        } else {
+            
+       $url = "https://api.zippopotam.us/us/$zip";
+       $response = json_decode(file_get_contents($url));
         $lat = $response->places[0]->latitude;
         $lon = $response->places[0]->longitude;
         return ['lat' => $lat, 'lon' => $lon];
+        }
+
     }
 }
