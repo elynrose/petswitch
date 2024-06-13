@@ -55,7 +55,7 @@ date_default_timezone_set(Auth::user()->timezone);
             <div class="col-md-9">
                
                 <h4 class="mt-1">{{ $serviceRequest->user->name ?? ''}} needs {{ $serviceRequest->service->name ?? '' }} for {{ $serviceRequest->pet->name ?? '' }}</h4>
-                <p class="small text-muted">Posted {{ $serviceRequest->created_at->diffForHumans() }}</p>
+                <p class="small text-muted">Posted {{ $serviceRequest->created_at->diffForHumans() }} near {{ $serviceRequest->zip_code ?? '' }}</p>
                 @if($rating)
                     <p class="small text-muted">Rating: 
                         @for($i = 1; $i <= 5; $i++)
@@ -90,7 +90,6 @@ date_default_timezone_set(Auth::user()->timezone);
                 </div>
                    <div class="row">  
                     <div class="col-md-6">
-                    <p><strong>Zip code:</strong> {{ $serviceRequest->zip_code ?? '' }}</p>
 
                 <p><strong>Pickup:</strong> {{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
                     </div>
