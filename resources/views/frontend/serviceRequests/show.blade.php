@@ -68,7 +68,6 @@ if(Auth::user()->timezone){
             <div class="col-md-8 mt-5 mb-5">
                 <div class="text-block">
                     <div class="mb-4">
-                        <h3>{{ $serviceRequest->zip_code ?? '' }}</h3>
                         <p class="mb-4"><strong>Service</strong>
 						: {{ ucfirst($serviceRequest->service->name) ?? '' }}</p>
                     </div>
@@ -91,6 +90,8 @@ if(Auth::user()->timezone){
                 </div>
             </div>
             <div class="col-md-4 block-content mt-5">
+            <div class="google-map"><iframe src="https://www.google.com/maps?q={{ $serviceRequest->zip_code ?? '' }}&output=embed"></iframe></div>
+
                 <div>
                     @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id)
                         <form id="bookingForm" action="{{ route('frontend.bookings.store') }}" method="POST" enctype="multipart/form-data">
