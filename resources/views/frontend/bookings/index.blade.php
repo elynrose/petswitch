@@ -18,7 +18,9 @@ date_default_timezone_set(Auth::user()->timezone);
         @if($bookings->isNotEmpty())
      
           @foreach($bookings as $key => $booking) 
-         {{ dd($booking->service_request)}}
+
+         @if(!is_null($booking->service_request))
+
             @php
               $from = \Carbon\Carbon::parse($booking->service_requests->from)->format('l, F j, Y, g:i A');
               $to = \Carbon\Carbon::parse($booking->service_requests->to)->format('l, F j, Y, g:i A');
@@ -95,6 +97,9 @@ date_default_timezone_set(Auth::user()->timezone);
                           <a class="btn btn-sm btn-default"><i class="fas fa-photo px-2"></i> {{_('Photos')}}</a>
 
                           @endif
+
+                          @endif
+                          
                         @endcan
                       </p>
                     </div>
