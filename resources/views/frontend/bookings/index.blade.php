@@ -13,13 +13,15 @@ date_default_timezone_set(Auth::user()->timezone);
     <div class="card">
       <div class="card-body">
         <h1 class="mb-5">{{ trans('cruds.booking.title')}}</h1>
-        @if($bookings->count() > 0)
+        @if($bookings)
+
           @foreach($bookings as $key => $booking)
             @php
               $from = \Carbon\Carbon::parse($booking->service_request->from)->format('l, F j, Y, g:i A');
               $to = \Carbon\Carbon::parse($booking->service_request->to)->format('l, F j, Y, g:i A');
               $today =  now()->timezone(Auth::user()->timezone);
             @endphp
+            
 <div class="card shadow-sm mb-5">
             <div class="card-body" @if($booking->decline==1) style="opacity:0.2!important;" @endif>
               <div class="row mt-3">
@@ -33,20 +35,18 @@ date_default_timezone_set(Auth::user()->timezone);
                 <div class="col-md-9">
                   <h4>{{ ucfirst($booking->service_request->service->name) ?? '' }} {{_('for')}} {{ $booking->service_request->pet->name ?? '' }}</h4><hr>
                   <p class="small text-muted"> Posted {{ $booking->service_request->created_at->diffForHumans() }}</p>
-
                   @if($booking)              
-@php
-    $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
-    $fromDateTime = \Carbon\Carbon::parse($booking->service_request->from)->timezone(Auth::user()->timezone);
-    $toDateTime = \Carbon\Carbon::parse($booking->service_request->to)->timezone(Auth::user()->timezone);
+                      @php
+                          $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
+                          $fromDateTime = \Carbon\Carbon::parse($booking->service_request->from)->timezone(Auth::user()->timezone);
+                          $toDateTime = \Carbon\Carbon::parse($booking->service_request->to)->timezone(Auth::user()->timezone);
 
-    //get the users rating
-    $rating = App\Models\PetReview::where('pet_id', $booking->pet_id)->avg('rating');
-    //Get the count
-    $rating_count = App\Models\PetReview::where('pet_id', $booking->pet_id)->count();
+                          //get the users rating
+                          $rating = App\Models\PetReview::where('pet_id', $booking->pet_id)->avg('rating');
+                          //Get the count
+                          $rating_count = App\Models\PetReview::where('pet_id', $booking->pet_id)->count();
+                      @endphp
 
-    
-@endphp
 @if($booking->service_request->decline == 0 && $booking->service_request->pending == 0 && $fromDateTime > $today)
 <p>{{_('New')}}</p>
 @elseif($fromDateTime < $today && $toDateTime > $today && $booking->service_request->decline == 0 && $booking->service_request->closed == 0 && $booking->service_request->pending == 1)
