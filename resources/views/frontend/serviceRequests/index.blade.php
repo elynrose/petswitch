@@ -115,23 +115,16 @@ if(Auth::user()->timezone){
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                         <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-check"></i> &nbsp;{{ __('cruds.serviceRequest.mark_as_completed') }}</button>
                                                     </form>
-                                                @elseif($serviceRequest->pending==2 && $serviceRequest->closed==1 && !$booking->review)
-                                                <a href="" class="btn btn-sm btn-default" data-toggle="modal" data-target="#reviewModal" data-booking-id="{{ $booking->id }}"><i class="fas fa-star"></i>&nbsp; {{ trans('cruds.serviceRequest.add_review') }}</a>
-                                                @endif
-                                                @if($serviceRequest->closed==0) 
-                                                    <a class="btn btn-primary btn-sm" href="{{ route('frontend.service-requests.show', $serviceRequest->id) }}">{{ __('global.view') }}</a> 
-                                                @endif
+@if($serviceRequest->closed==2 && $serviceRequest->closed==1 && $booking && !$booking->review)
+    <a href="" class="btn btn-sm btn-default" data-toggle="modal" data-target="#reviewModal" data-booking-id="{{ $booking->id }}"><i class="fas fa-star"></i>&nbsp; {{ trans('cruds.serviceRequest.add_review') }}</a>
+@endif
+@if($serviceRequest->closed==0) 
+    <a class="btn btn-primary btn-sm" href="{{ route('frontend.service-requests.show', $serviceRequest->id) }}">{{ __('global.view') }}</a> 
+@endif
 
-                                                @if(\Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone) < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
-                                                <p class="small red">{{ trans('cruds.serviceRequest.expired_request')}} </p> 
-                                                @endif
-
-                                            </p>                                              
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+@if(\Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone) < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
+    <p class="small red">{{ trans('cruds.serviceRequest.expired_request')}} </p> 
+@endif
 
 
 @if(!is_null($booking))
