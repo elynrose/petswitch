@@ -99,7 +99,6 @@ if(Auth::user()->timezone){
 
 
                                     @endif
-
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p><strong>{{ __('Pickup') }}</strong><br>{{ \Carbon\Carbon::parse($serviceRequest->from)->format('l, F j, Y, g:i A') ?? '' }}</p>
