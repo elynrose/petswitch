@@ -68,6 +68,7 @@ if(Auth::user()->timezone){
             <div class="col-md-8 mt-5 mb-5">
                 <div class="text-block">
                     <div class="mb-4">
+                        <h3>{{ $serviceRequest->zip_code ?? '' }}</h3>
                         <p class="mb-4"><strong>Service</strong>
 						: {{ ucfirst($serviceRequest->service->name) ?? '' }}</p>
                     </div>
