@@ -14,8 +14,8 @@ date_default_timezone_set(Auth::user()->timezone);
       <div class="card-body">
         <h1 class="mb-5">{{ trans('cruds.booking.title')}}</h1>
 
-     
-        @if($bookings)
+ 
+        @if($bookings->isNotEmpty())
 
           @foreach($bookings as $key => $booking)
             @php
