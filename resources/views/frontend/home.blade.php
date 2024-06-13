@@ -75,17 +75,17 @@ date_default_timezone_set(Auth::user()->timezone);
             
                 <div class="badge-container mb-3">
                     @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
-                        <span class="badge bg-success text-white">New</span>
+                        <span class="badge badge-success text-white">New</span>
                     @elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                        <span class="badge bg-success text-white">Booked</span>
+                        <span class="badge badge-success text-white">Booked</span>
                     @elseif($toDateTime < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
-                        <span class="badge bg-danger text-white">Expired</span>
+                        <span class="badge badge-danger text-white">Expired</span>
                     @elseif($fromDateTime <= $today && $toDateTime >= $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                        <span class="badge bg-info text-white">Ongoing</span>
+                        <span class="badge badge-info text-white">Ongoing</span>
                     @elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                        <span class="badge bg-info text-white">Upcoming</span>
+                        <span class="badge badge-info text-white">Upcoming</span>
                     @elseif($serviceRequest->pending == 2 && $serviceRequest->decline == 0 && $serviceRequest->to < $today)
-                        <span class="badge bg-warning">Completed</span>
+                        <span class="badge badge-warning">Completed</span>
                     @endif
                 </div>
                    <div class="row">  
