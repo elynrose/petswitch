@@ -98,13 +98,7 @@ date_default_timezone_set(Auth::user()->timezone);
                     @elseif($serviceRequest->closed == 0)
                         <a class="btn btn-primary btn-sm" href="{{ route('frontend.service-requests.show', $serviceRequest->id) }}">{{trans('global.view')}}</a>
                     @endif
-                    @can('service_request_delete')
-                        <form action="{{ route('frontend.service-requests.destroy', $serviceRequest->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" class="d-inline-block">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        </form>
-                    @endcan
+                   
                 </div>
             </div>
         </div>
