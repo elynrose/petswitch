@@ -23,9 +23,9 @@ date_default_timezone_set(Auth::user()->timezone);
               $to = \Carbon\Carbon::parse($booking->service_request->to)->format('l, F j, Y, g:i A');
               $today =  now()->timezone(Auth::user()->timezone);
             @endphp
-
+{{dd($from.'  '.$to)}}
 <div class="card shadow-sm mb-5">
-            <div class="card-body" @if($booking->decline==1) style="opacity:0.2!important;" @endif>
+            <div class="card-body">
               <div class="row mt-3">
                 <div class="col-md-3 mb-3">
                   @if($booking->service_request->pet->photos)
