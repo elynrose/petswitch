@@ -18,7 +18,12 @@ date_default_timezone_set(Auth::user()->timezone);
         @if($bookings->count() > 0)
 
           @foreach($bookings as $key => $booking)
-         
+            @php
+              $from = \Carbon\Carbon::parse($booking->service_request->from)->format('l, F j, Y, g:i A');
+              $to = \Carbon\Carbon::parse($booking->service_request->to)->format('l, F j, Y, g:i A');
+              $today =  now()->timezone(Auth::user()->timezone);
+            @endphp
+
 <div class="card shadow-sm mb-5">
             <div class="card-body">
               <div class="row mt-3">
@@ -34,7 +39,6 @@ date_default_timezone_set(Auth::user()->timezone);
                   <p class="small text-muted"> Posted {{ $booking->service_request->created_at->diffForHumans() }}</p>
                   @if($booking)              
                       @php
-                          $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
                           $fromDateTime = \Carbon\Carbon::parse($booking->service_request->from)->timezone(Auth::user()->timezone);
                           $toDateTime = \Carbon\Carbon::parse($booking->service_request->to)->timezone(Auth::user()->timezone);
 
