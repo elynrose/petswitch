@@ -65,7 +65,7 @@ if(Auth::user()->timezone){
 <section class="mbr-section form6 agencym4_form6" id="form6-3m">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 mt-5 mb-5">
+            <div class="col-md-6 mt-5 mb-5">
                 <div class="text-block">
                     <div class="mb-4">
                         <p class="mb-4"><strong>Service</strong>
@@ -89,9 +89,12 @@ if(Auth::user()->timezone){
                     <p><strong>Is Immunized</strong>: <input type="checkbox" disabled {{ $serviceRequest->pet->is_immunized ? 'checked' : '' }}></p>
                 </div>
             </div>
-            <div class="col-md-4 block-content mt-5">
-            <div class="google-map"><iframe src="https://www.google.com/maps?q={{ $serviceRequest->zip_code ?? '' }}&output=embed"></iframe></div>
+            <div class="col-md-6 block-content mt-5">
 
+            
+          
+                <div class="google-map"><iframe width="100%" height="300" frameborder="0" src="https://www.google.com/maps?q={{ $serviceRequest->zip_code ?? ''}}&output=embed"></iframe></div>
+           
                 <div>
                     @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id)
                         <form id="bookingForm" action="{{ route('frontend.bookings.store') }}" method="POST" enctype="multipart/form-data">
