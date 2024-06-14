@@ -22,7 +22,7 @@ use App\Models\Pet;
 use App\Models\Review;
 use App\Models\Availability;
 use App\Models\Service;
-use App\Models\ZipCodes;
+use App\Models\ZipCode;
 
 
 class UsersController extends Controller
@@ -92,7 +92,7 @@ class UsersController extends Controller
     public function getZipCode($zip)
     {
         //fetch from zip_codes in database
-        $places = ZipCodes::where('zip', $zip)->first();
+        $places = ZipCode::where('zip', $zip)->first();
         if ($places) {
             return ['lat' => $places->latitude, 'lon' => $places->longitude];
         } else {

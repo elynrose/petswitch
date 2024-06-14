@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\ZipCodes;
+use App\Models\ZipCode;
 
 
 class ServiceRequestsController extends Controller
@@ -324,7 +324,7 @@ class ServiceRequestsController extends Controller
     public function getZipCode($zip)
     {
         //fetch from zip_codes in database
-        $places = ZipCodes::where('zip', $zip)->first();
+        $places = ZipCode::where('zip', $zip)->first();
         if ($places) {
             return ['lat' => $places->latitude, 'lon' => $places->longitude];
         } else {
