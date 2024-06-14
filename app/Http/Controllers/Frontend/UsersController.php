@@ -36,8 +36,8 @@ class UsersController extends Controller
         if (request()->input('zip') && request()->input('radius')) {
             $zip = request()->input('zip');
             $radius = request()->input('radius');
-            
-           $users = $this->findNearbyMembers($zip, $radius);
+            $zipCode = new ZipCode;
+           $users = $zipCode->getNearbyMembers($zip, $radius);
            
         } else {
 
