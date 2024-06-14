@@ -22,7 +22,6 @@ use App\Models\Pet;
 use App\Models\Review;
 use App\Models\Availability;
 use App\Models\Service;
-use App\Models\ZipCode;
 
 
 class UsersController extends Controller
@@ -36,8 +35,8 @@ class UsersController extends Controller
         if (request()->input('zip') && request()->input('radius')) {
             $zip = request()->input('zip');
             $radius = request()->input('radius');
-            $zipCode = new ZipCode;
-           $users = $zipCode->getNearbyMembers($zip, $radius);
+            
+           $users = $this->findNearbyMembers($zip, $radius);
            
         } else {
 
@@ -91,19 +90,11 @@ class UsersController extends Controller
 
     public function getZipCode($zip)
     {
-        //fetch from zip_codes in database
-        $places = ZipCode::where('zip', $zip)->first();
-        if ($places) {
-            return ['lat' => $places->latitude, 'lon' => $places->longitude];
-        } else {
-            
-       $url = "https://api.zippopotam.us/us/$zip";
-       $response = json_decode(file_get_contents($url));
+        $url = "https://api.zippopotam.us/us/$zip";
+        $response = json_decode(file_get_contents($url));
         $lat = $response->places[0]->latitude;
         $lon = $response->places[0]->longitude;
         return ['lat' => $lat, 'lon' => $lon];
-        }
-
     }
 
     public function create()
