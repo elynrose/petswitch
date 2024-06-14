@@ -37,6 +37,10 @@ class UsersController extends Controller
             $radius = request()->input('radius');
             
            $users = $this->findNearbyMembers($zip, $radius);
+
+           if(!$users) {
+            return redirect()->route('frontend.users.index')->with('message', 'No members found within the radius of ' . $radius . ' miles from ' . $zip);
+           }
            
         } else {
 
@@ -67,7 +71,12 @@ class UsersController extends Controller
                 $users[] = $user;
             }
         }
-        return $users;
+        if($users){
+            return $users;
+        } else {
+            return false;
+        }
+        
     }
     
     public function calculateDistance($lat1, $lon1, $lat2, $lon2)
