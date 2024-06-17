@@ -62,6 +62,7 @@ class UsersController extends Controller
         $zip = $this->getZipCode($zip);
         $zipLat = $zip['lat'];
         $zipLon = $zip['lon'];
+        $users = [];
         foreach ($members as $user) {
             $userZip = $this->getZipCode($user->zip);
             $userLat = $userZip['lat'];
@@ -71,10 +72,11 @@ class UsersController extends Controller
                 $users[] = $user;
             }
         }
-        if($users){
+        if(count($users) > 0){
             return $users;
         } else {
-            return false;
+            $users = NULL;
+            return redirect()->route('frontend.users.index')->with('message', 'No members found');
         }
         
     }

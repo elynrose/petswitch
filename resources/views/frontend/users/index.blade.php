@@ -28,6 +28,7 @@
     </form>
 
 		<div class="media-container-row">
+      @if(is_array($users) && count($users) > 0)
         @foreach($users as $key => $user)
 			<div class="card col-12 col-md-3 col-lg-3">
 				<div class="card-img">
@@ -51,7 +52,7 @@
 				</div>
 			</div>
             @endforeach       
-		
+	@endif
 			
 		</div>
 
