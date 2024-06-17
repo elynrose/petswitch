@@ -23,17 +23,17 @@ if(Auth::user()->timezone){
                 <div class="media-container-row">
                     <div class="media-content">
                         @if($serviceRequest->decline == 0 && $serviceRequest->pending == 0 && $fromDateTime > $today)
-                            <span class="badge bg-success text-white">New</span>
+                            <span class="badge badge-success text-white">New</span>
                         @elseif($fromDateTime < $today && $toDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                            <span class="badge bg-success text-white">Booked</span>
+                            <span class="badge badge-success text-white">Booked</span>
                         @elseif($toDateTime < $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 0)
-                            <span class="badge bg-danger text-white">Expired</span>
+                            <span class="badge badge-danger text-white">Expired</span>
                         @elseif($fromDateTime <= $today && $toDateTime >= $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                            <span class="badge bg-info text-white">Ongoing</span>
+                            <span class="badge badge-info text-white">Ongoing</span>
                         @elseif($fromDateTime > $today && $serviceRequest->decline == 0 && $serviceRequest->closed == 0 && $serviceRequest->pending == 1)
-                            <span class="badge bg-info text-white">Upcoming</span>
+                            <span class="badge badge-info text-white">Upcoming</span>
                         @elseif($serviceRequest->pending == 2 && $serviceRequest->decline == 0 && $serviceRequest->to < $today)
-                            <span class="badge bg-warning">Completed</span>
+                            <span class="badge badge-warning">Completed</span>
                         @endif
 
                         <h1 class="text-white display-2 mt-3">
@@ -96,7 +96,7 @@ if(Auth::user()->timezone){
                 <div class="google-map"><iframe width="100%" height="300" frameborder="0" src="https://www.google.com/maps?q={{ $serviceRequest->zip_code ?? ''}}&output=embed"></iframe></div>
            
                 <div>
-                    @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id)
+                    @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id && $serviceRequest->pending == 0 && $serviceRequest->decline == 0)
                         <form id="bookingForm" action="{{ route('frontend.bookings.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="panel pb-4">
