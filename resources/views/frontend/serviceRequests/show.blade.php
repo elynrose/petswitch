@@ -96,7 +96,7 @@ if(Auth::user()->timezone){
                 <div class="google-map"><iframe width="100%" height="300" frameborder="0" src="https://www.google.com/maps?q={{ $serviceRequest->zip_code ?? ''}}&output=embed"></iframe></div>
            
                 <div>
-                    @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id && $serviceRequest->pending == 0 && $serviceRequest->decline == 0)
+                    @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id && $serviceRequest->pending == 0 && $serviceRequest->decline == 0 && $toDateTime > $today)
                         <form id="bookingForm" action="{{ route('frontend.bookings.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="panel pb-4">
@@ -114,7 +114,7 @@ if(Auth::user()->timezone){
                             <button type="submit" class="btn btn-primary btn-bgr display-4" id="bookButton">Book {{ $serviceRequest->pet->name ?? '' }}</button>
                         </form>
                     @else
-                        @if(Auth::id() == $serviceRequest->user_id && $serviceRequest->pending == 0)
+                        @if(Auth::id() == $serviceRequest->user_id && $serviceRequest->pending == 0 || $toDateTime < $today)
                             <a class="btn btn-success" href="{{ route('frontend.service-requests.edit', $serviceRequest->id) }}">
                                 <i class="fas fa-edit"></i> {{ trans('global.edit') }} {{ trans('cruds.serviceRequest.title_singular') }}
                             </a>
