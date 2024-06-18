@@ -246,3 +246,9 @@ border-radius:1rem;
 .bg-dark{
     background-color: #000!important;
 }
+
+.btn-sm {
+    padding: 0.9rem 1.8rem!important;
+    border-radius: 3px;
+    margin-top:0px;
+}

@@ -8,7 +8,7 @@
        
 
                 <div class="card-body">
-                    <h1 class="py-5">Add a pet</h1>
+                    <h3 class="py-5"><strong>Add a pet</strong></h3>
                     <form method="POST" action="{{ route("frontend.pets.store") }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group">
                             <label class="required">{{ trans('cruds.pet.fields.size') }}</label>
-                            <select class="form-control" name="size" id="size" required>
+                            <select class="form-control col-md-2 col-sm-12" name="size" id="size" required>
                                 <option value disabled {{ old('size', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                                 @foreach(App\Models\Pet::SIZE_SELECT as $key => $label)
                                     <option value="{{ $key }}" {{ old('size', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="form-group">
                             <label class="required" for="age">{{ trans('cruds.pet.fields.age') }}</label>
-                            <input class="form-control" type="text" name="age" id="age" value="{{ old('age', '') }}" required>
+                            <input class="form-control col-md-2 col-sm-12" type="text" name="age" id="age" value="{{ old('age', '') }}" required>
                             @if($errors->has('age'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('age') }}
@@ -84,7 +84,7 @@
                         </div>
                         <div class="form-group">
                             <label class="required">{{ trans('cruds.pet.fields.gender') }}</label>
-                            <select class="form-control" name="gender" id="gender" required>
+                            <select class="form-control col-md-3 col-sm-12" name="gender" id="gender" required>
                                 <option value disabled {{ old('gender', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                                 @foreach(App\Models\Pet::GENDER_SELECT as $key => $label)
                                     <option value="{{ $key }}" {{ old('gender', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>

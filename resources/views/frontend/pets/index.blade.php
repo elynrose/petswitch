@@ -3,19 +3,12 @@
 @section('content')
 <section class="features15 agencym4_features15 cid-ucRMkyKyoy" id="features15-3a">
   <div class="container">
-    <h1 class="mb-5">{{ trans('cruds.pet.my_pets') }}</h1>
-    <div class="row">
-      <div class="col-lg-12">
-        @can('pet_create')
-        <a class="btn btn-success btn-sm mb-5" href="{{ route('frontend.pets.create') }}">
-          {{ trans('global.add') }} {{ trans('cruds.pet.title_singular') }}
-        </a>
-        @endcan
-      </div>
-    </div>
-    <div class="row">
+    <h3 class="mb-5"><strong>{{ trans('cruds.pet.my_pets') }}</strong></h3>
+  
+  
+      <div class="col-md-12">  <div class="row">
       @foreach($pets as $key => $pet)
-      <div class="col-12 col-md-4 col-lg-3">
+      <div class="col-12 col-md-4 col-lg-3 mt-5">
         <div class="card shadow-sm">
           <div class="card-img">
             @if($pet->photos)
@@ -46,6 +39,17 @@
         </div>
       </div>
       @endforeach
+      <div class="col-12 col-md-4 col-lg-3 mt-5">
+        <div class="card">
+          <div class="card-img">
+           <a href="{{ route('frontend.pets.create') }}">
+            <i class="fas fa-plus-circle fa-10x text-default"></i>
+           </a>
+          </div>
+   
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </section>

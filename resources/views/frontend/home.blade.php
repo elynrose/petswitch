@@ -13,7 +13,7 @@ date_default_timezone_set(Auth::user()->timezone);
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="mb-5">Incoming Requests</h1>
+                    <h3 class="mb-5"><strong> {{ trans('global.new_requests') }} </strong></h3>
                     @can('service_request_create')
                     <div class="row">
                         <div class="col-lg-6 mb-3">
@@ -114,7 +114,7 @@ date_default_timezone_set(Auth::user()->timezone);
                 @endforeach
                 @else
                 <div class="card-body">
-                    <h4>{{_('No Help Needed Right Now. Relax and Chill')}}</h4>
+                  <div class="alert alert-info">{{ trans('global.no_help_needed') }}</div>  
                 </div>
                 @endif
                 @if(!Request::has('zip') && !Request::has('radius'))

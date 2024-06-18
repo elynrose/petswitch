@@ -8,7 +8,7 @@
            
 
                 <div class="card-body">
-                    <h1 class="py-5">Edit Pet</h1>
+                    <h3 class="py-5"><strong>Edit {{ $pet->name.'\'s' ?? 'Pet\'s' }}  {{ trans('global.information') }} </strong></h3>
                     <form method="POST" action="{{ route("frontend.pets.update", [$pet->id]) }}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group">
                             <label class="required">{{ trans('cruds.pet.fields.size') }}</label>
-                            <select class="form-control" name="size" id="size" required>
+                            <select class="form-control col-md-2 col-sm-12" name="size" id="size" required>
                                 <option value disabled {{ old('size', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                                 @foreach(App\Models\Pet::SIZE_SELECT as $key => $label)
                                     <option value="{{ $key }}" {{ old('size', $pet->size) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="form-group">
                             <label class="required" for="age">{{ trans('cruds.pet.fields.age') }}</label>
-                            <input class="form-control" type="text" name="age" id="age" value="{{ old('age', $pet->age) }}" required>
+                            <input class="form-control col-md-2 col-sm-12" type="text" name="age" id="age" value="{{ old('age', $pet->age) }}" required>
                             @if($errors->has('age'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('age') }}

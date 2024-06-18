@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'information'                 => 'Information',
+    'no_help_needed' => 'No help needed. Relax and enjoy your day!',
+    'new_requests' => 'New Requests',
     'decline'                    => 'You have declined the service request. The requester will be notified.',
     'in_progress'                    => 'Go back',
     'timezone'                       => 'Timezone',

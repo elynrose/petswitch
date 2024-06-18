@@ -131,15 +131,17 @@ if(Auth::user()->timezone){
                                 <div class="modal-dialog" role="document">
                                     <div id="result"></div>
                                     <div class="modal-content">
+                                        
                                         <form action="{{ route('frontend.reviews.store') }}" method="POST">
                                             @csrf
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="reviewModalLabel">Write a review about the time {{$booking->service_request->pet->name}} spent with {{$booking->service_request->user->name}}</h5>
+                                                <h5 class="modal-title" id="reviewModalLabel">Write a review</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <p>Write a review about the time {{$booking->service_request->pet->name}} spent with {{$booking->user->name}}</p>
                                                 <div class="rating-stars small">
                                                     {{$booking->service_request->user->name}}'s Rating:
                                                     @for($i = 1; $i <= 5; $i++)
@@ -151,7 +153,6 @@ if(Auth::user()->timezone){
                                                     @endfor
                                                     ({{$rating_count ? $rating_count.' reviews' : 'No reviews'}})
                                                 </div>
-                                                <p class="small">We would like to know a little more about your time with {{ $booking->service_request->user->name }}.</p>
                                                 <input type="hidden" name="booking_id" id="booking_id">
                                                 <div class="form-group  row">
                                                     <div class="col-md-12">
