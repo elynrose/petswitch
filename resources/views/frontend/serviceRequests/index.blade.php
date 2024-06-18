@@ -39,9 +39,9 @@ if(Auth::user()->timezone){
                                             <img src="{{ asset('/assets/images/User.png') }}" width="100%" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}">
                                         @endif
                                         @if($booking && !is_null($userPhoto->profile))
-                                            <img src="{{ $userPhoto->profile_photo->getUrl('thumb') }}" class="user-image shadow" data-id="{{ $userPhoto->id }}" id="user-img-{{ $userPhoto->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%; z-index:9999;">
+                                            <img src="{{ $userPhoto->profile_photo->getUrl('thumb') }}" class="user-image shadow" data-id="{{ $userPhoto->id }}" id="user-img-{{ $userPhoto->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%; z-index:1;">
                                         @else
-                                            <img src="{{ asset('/assets/images/User.png') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%; z-index:9999;">
+                                            <img src="{{ asset('/assets/images/User.png') }}" class="pet-image" data-id="{{ $serviceRequest->pet->id }}" id="pet-img-{{ $serviceRequest->pet->id }}" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 80px; border-radius: 50%; z-index:1;">
                                         @endif
                                     </div>
                                     <!--Get the pets rating-->

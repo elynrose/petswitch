@@ -96,7 +96,7 @@ if(Auth::user()->timezone){
                 <div class="google-map"><iframe width="100%" height="300" frameborder="0" src="https://www.google.com/maps?q={{ $serviceRequest->zip_code ?? ''}}&output=embed"></iframe></div>
            
                 <div>
-                    @if($serviceRequest->closed == 0 && Auth::id() !== $serviceRequest->user_id && $serviceRequest->pending == 0 && $serviceRequest->decline == 0 && $toDateTime > $today)
+                    @if($serviceRequest->closed == 0 && (Auth::id() !== $serviceRequest->user_id) && $serviceRequest->pending == 0 && $serviceRequest->decline == 0 && $toDateTime > $today && !$serviceRequest->booking)
                         <form id="bookingForm" action="{{ route('frontend.bookings.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="panel pb-4">
