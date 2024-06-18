@@ -57,7 +57,7 @@ date_default_timezone_set(Auth::user()->timezone);
 <p>{{_('New')}}</p>
 @elseif($fromDateTime < $today && $toDateTime > $today && $booking->service_request->decline == 0 && $booking->service_request->closed == 0 && $booking->service_request->pending == 1)
 <p class="badge badge-success">{{_('Booked')}}</p>
-@elseif($toDateTime < $today && $booking->service_request->decline == 0 && $booking->service_request->closed == 0 && $booking->service_request->pending == 0)
+@elseif($toDateTime < $today && $booking->service_request->decline == 0 && $booking->service_request->closed == 0 && ($booking->service_request->pending == 0 || $booking->service_request->pending == 1 ))
 <p class="badge badge-danger">{{_('Expired')}}</p>
 @elseif($fromDateTime <= $today && $toDateTime >= $today && $booking->service_request->decline == 0 && $booking->service_request->closed == 0 && $booking->service_request->pending == 1 )
 <p class="badge badge-info">{{_('Ongoing')}}</p>
@@ -85,16 +85,18 @@ date_default_timezone_set(Auth::user()->timezone);
                               <input type="submit" class="btn btn-sm btn-primary" value="{{ trans('cruds.booking.fields.decline') }}">
                             </form>
                           @endcan
+                          <a href="{{ route('frontend.bookings.show', $booking->id) }}" class="btn btn-sm btn-default">{{ trans('global.details') }}</a>
+                          
                         @else
                           @if($booking->service_request->from < $today && $booking->service_request->to > $today && $booking->service_request->decline == 0 && $booking->service_request->closed == 0 && $booking->service_request->pending == 1)
-                            <p><a href="{{ route('frontend.bookings.show', $booking->id) }}" class="btn btn-sm">View</a> <a href="" class="btn btn-sm">Share</a> <a href="" class="btn btn-sm">Review</a></p>
+                            <p><a href="{{ route('frontend.bookings.show', $booking->id) }}" class="btn btn-sm">{{ trans('global.view') }}</a> <a href="" class="btn btn-sm">Share</a> <a href="" class="btn btn-sm">Review</a></p>
                         
                             @endif
 
                           @if($booking->service_request->pending==2 && $booking->service_request->decline == 0  && $booking->service_request->to < $today)
                           <!--add review modal link -->
                             <a href="" class="btn btn-sm btn-default" data-toggle="modal" data-target="#reviewModal" data-booking-id="{{ $booking->id }}"><i class="fas fa-star"></i>&nbsp; Add review </a>
-                          <a class="btn btn-sm btn-default"><i class="fas fa-photo px-2"></i> {{_('Photos')}}</a>
+                          <a class="btn btn-sm btn-default"><i class="fas fa-photo px-2"></i>{{ trans('global.photos') }}</a>
 
                           @endif
 
