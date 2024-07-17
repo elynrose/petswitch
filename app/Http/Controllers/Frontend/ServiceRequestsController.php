@@ -242,6 +242,14 @@ class ServiceRequestsController extends Controller
             return redirect()->back();
         } else {
 
+            if($request->from != $serviceRequest->from || $request->to != $serviceRequest->to) {
+                //ccalculate new hours and deduct from user credit
+                $newHours = $request->hours;
+                $userCredit->points -= $newHours;
+                $userCredit->service_request_id = $serviceRequest->id;
+                $userCredit->save();
+                }
+
         $serviceRequest->update([
             'service_id' => $request->service_id,
             'pet_id' => $request->pet_id,

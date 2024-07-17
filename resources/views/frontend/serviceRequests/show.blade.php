@@ -3,7 +3,10 @@
 @php 
 if(Auth::user()->timezone){
     date_default_timezone_set(Auth::user()->timezone);
+    $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
+
 }
+ 
 @endphp
 
 @section('content')
@@ -13,7 +16,6 @@ if(Auth::user()->timezone){
             <div class="col-md-8">
               
                     @php
-                        $today = \Carbon\Carbon::now()->timezone(Auth::user()->timezone);
                         $fromDateTime = \Carbon\Carbon::parse($serviceRequest->from)->timezone(Auth::user()->timezone);
                         $toDateTime = \Carbon\Carbon::parse($serviceRequest->to)->timezone(Auth::user()->timezone);
                         $rating = App\Models\PetReview::where('pet_id', $serviceRequest->pet->id)->avg('rating');

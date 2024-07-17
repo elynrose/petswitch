@@ -76,8 +76,8 @@
                         </div>
                        
                         <div class="form-group">
-                            <input type="hidden" name="pet_id" value="{{$serviceRequest->pet->id}}">
-                            <input type="hidden" name="zip_code" value="{{$serviceRequest->zip_code}}">
+                            <input type="hidden" name="pet_id" value="{{ $serviceRequest->pet->id}}">
+                            <input type="hidden" name="zip_code" value="{{ $serviceRequest->zip_code }}">
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <button class="btn btn-primary btn-sm" type="submit">
                                 {{ trans('global.save') }}
